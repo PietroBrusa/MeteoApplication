@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
+             x:Class="MeteoApp.MeteoListPage"
+             Title="{x:Static res:AppResources.PageTitleLocations}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+" Clicked="OnItemAdded" />
+        <ToolbarItem Text="{x:Static res:AppResources.ChangeLanguage}" Clicked="OnChangeLanguageClicked" />
+    </ContentPage.ToolbarItems>
+
+    <CollectionView ItemsSource="{Binding Entries}" 
+                    SelectionMode="Single"
+                    SelectionChanged="OnSelectionChanged">
+
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <SwipeView Threshold="100" >
+                    <SwipeView.RightItems>
+                        <SwipeItems Mode="Execute">
+                            <SwipeItem IsVisible="{Binding IsDeletable}"
+                                       Text="{x:Static res:AppResources.DeleteText}"
+                                       BackgroundColor="Red"
+                                       Clicked="OnItemRemoved"
+                                       CommandParameter="{Binding .}" />
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+
+                    <StackLayout Margin="15,10" Orientation="Vertical" BackgroundColor="Black">
+                        <Label Text="{Binding Name}" 
+                               FontSize="18" 
+                               FontAttributes="Bold" />
+
+                        <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,5,0,0">
+                            <Label Text="{Binding WeatherDescription}" 
+                                   FontSize="14" 
+                                   TextColor="Gray" 
+                                   VerticalOptions="Center"/>
+
+                            <Label Text="{Binding CurrentTemperature, StringFormat='{0:F1} °C'}" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="EndAndExpand"
+                                   VerticalOptions="Center"/>
+                        </StackLayout>
+                    </StackLayout>
+                </SwipeView>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+
+    </CollectionView>
+
+</ContentPage>
