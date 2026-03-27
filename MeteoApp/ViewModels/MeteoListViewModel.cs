@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using MeteoApp.Models;
 using Newtonsoft.Json;
 
 namespace MeteoApp
@@ -87,6 +88,7 @@ namespace MeteoApp
                     Latitude = weatherData.coord.lat,
                     Longitude = weatherData.coord.lon,  
                     CurrentTemperature = weatherData.main.temp,
+                    WeatherCode = weatherData.weather[0].id,
                     WeatherDescription = weatherData.weather[0].description,
                 };
             }

@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using MeteoApp.Models;
+using SQLite;
 
 namespace MeteoApp
 {
@@ -15,6 +16,7 @@ namespace MeteoApp
         public bool NotificationsEnabled { get; set; }
 
         public double CurrentTemperature { get; set; }
+        public int WeatherCode { get; set; }
         public string WeatherDescription { get; set; }
         public bool IsDeletable { get; set; } = true;
     }

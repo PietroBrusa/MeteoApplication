@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
+             xmlns:models="clr-namespace:MeteoApp.Models"
              x:Class="MeteoApp.MeteoListPage"
              Title="{x:Static res:AppResources.PageTitleLocations}">
 
@@ -9,6 +10,10 @@
         <ToolbarItem Text="+" Clicked="OnItemAdded" />
         <ToolbarItem Text="{x:Static res:AppResources.ChangeLanguage}" Clicked="OnChangeLanguageClicked" />
     </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <models:WeatherImageConverter x:Key="WeatherImageConverter"/>
+    </ContentPage.Resources>
 
     <CollectionView ItemsSource="{Binding Entries}" 
                     SelectionMode="Single"
@@ -27,24 +32,37 @@
                         </SwipeItems>
                     </SwipeView.RightItems>
 
-                    <StackLayout Margin="15,10" Orientation="Vertical" BackgroundColor="Black">
-                        <Label Text="{Binding Name}" 
-                               FontSize="18" 
-                               FontAttributes="Bold" />
-
-                        <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,5,0,0">
-                            <Label Text="{Binding WeatherDescription}" 
-                                   FontSize="14" 
-                                   TextColor="Gray" 
-                                   VerticalOptions="Center"/>
-
-                            <Label Text="{Binding CurrentTemperature, StringFormat='{0:F1} °C'}" 
-                                   FontSize="16" 
+                    <Grid>
+                        <Image Source="{Binding WeatherCode, Converter={StaticResource WeatherImageConverter}}"
+                               Aspect="AspectFill">
+                            <Image.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <On Platform="iOS, Android" Value="100"/>
+                                </OnPlatform>
+                            </Image.HeightRequest>
+                        </Image>
+                        <BoxView Color="#80000000"/>
+                        <StackLayout Margin="15,10" Orientation="Vertical">
+                            <Label Text="{Binding Name}" 
+                                   FontSize="18" 
                                    FontAttributes="Bold"
-                                   HorizontalOptions="EndAndExpand"
-                                   VerticalOptions="Center"/>
+                                   TextColor="White"/>
+
+                            <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,5,0,0">
+                                <Label Text="{Binding WeatherDescription}" 
+                                       FontSize="14" 
+                                       TextColor="#E0E0E0" 
+                                       VerticalOptions="Center"/>
+
+                                <Label Text="{Binding CurrentTemperature, StringFormat='{0:F1} °C'}" 
+                                       FontSize="16" 
+                                       FontAttributes="Bold"
+                                       TextColor="White"
+                                       HorizontalOptions="EndAndExpand"
+                                       VerticalOptions="Center"/>
+                            </StackLayout>
                         </StackLayout>
-                    </StackLayout>
+                    </Grid>
                 </SwipeView>
             </DataTemplate>
         </CollectionView.ItemTemplate>
