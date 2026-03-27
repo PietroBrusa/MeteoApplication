@@ -84,6 +84,8 @@ namespace MeteoApp
                 {
                     Id = id,
                     Name = weatherData.name,
+                    Latitude = weatherData.coord.lat,
+                    Longitude = weatherData.coord.lon,  
                     CurrentTemperature = weatherData.main.temp,
                     WeatherDescription = weatherData.weather[0].description,
                 };

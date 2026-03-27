@@ -1,4 +1,6 @@
-﻿using static Android.Security.Identity.CredentialDataResult;
+﻿using Android.Graphics;
+using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Maps;
 
 namespace MeteoApp;
 
@@ -14,6 +16,7 @@ public partial class MeteoItemPage : ContentPage
         {
             meteoLocation = value;
             OnPropertyChanged();
+            UpdateMap();
         }
     }
 
@@ -23,8 +26,20 @@ public partial class MeteoItemPage : ContentPage
         BindingContext = this;
     }
 
-    protected override void OnAppearing()
+    private void UpdateMap()
     {
-        base.OnAppearing();
+        if (MeteoLocation != null && CityMap != null)
+        {
+            var location = new Location(MeteoLocation.Latitude, MeteoLocation.Longitude);
+
+            CityMap.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromKilometers(10)));
+
+            CityMap.Pins.Clear();
+            CityMap.Pins.Add(new Pin
+            {
+                Label = MeteoLocation.Name,
+                Location = location
+            });
+        }
     }
 }
