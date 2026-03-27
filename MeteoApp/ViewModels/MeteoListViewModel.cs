@@ -73,7 +73,9 @@ namespace MeteoApp
         {
             using HttpClient client = new HttpClient();
 
-            string url = $"https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={Secret.OpenWeatherMapApiKey}&units=metric";
+            string langCode = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+
+            string url = $"https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={Secret.OpenWeatherMapApiKey}&units=metric&lang={langCode}";
 
             try
             {
