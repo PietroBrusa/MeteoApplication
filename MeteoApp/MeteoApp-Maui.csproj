@@ -31,7 +31,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" BaseSize="168,168"/>
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" BaseSize="168,168" />
 
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
@@ -49,6 +49,11 @@
 
     <ItemGroup>
       <None Remove="Models\" />
+      <None Remove="Resources\Images\Weather\overcast.png" />
+      <None Remove="Resources\Images\Weather\rainy.png" />
+      <None Remove="Resources\Images\Weather\storm.png" />
+      <None Remove="Resources\Images\Weather\sunny_clear.png" />
+      <None Remove="Resources\Images\Weather\sunny_cloudy.png" />
       <None Remove="sqlite-net-pcl" />
       <None Remove="Xam.Plugin.Geolocator" />
       <None Remove="Resources\.DS_Store" />
@@ -60,6 +65,13 @@
     </ItemGroup>
     <ItemGroup>
       <BundleResource Include="Resources\.DS_Store" />
+    </ItemGroup>
+    <ItemGroup>
+      <MauiImage Include="Resources\Images\Weather\overcast.png" />
+      <MauiImage Include="Resources\Images\Weather\rainy.png" />
+      <MauiImage Include="Resources\Images\Weather\storm.png" />
+      <MauiImage Include="Resources\Images\Weather\sunny_clear.png" />
+      <MauiImage Include="Resources\Images\Weather\sunny_cloudy.png" />
     </ItemGroup>
     <ItemGroup>
       <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="MeteoItemPage.xaml">
