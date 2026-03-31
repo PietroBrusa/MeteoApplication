@@ -1,8 +1,6 @@
-﻿using Android.Content.Res;
-using MeteoApp.Resources.Strings;
+﻿using MeteoApp.Resources.Strings;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
-using static Android.Security.Identity.CredentialDataResult;
 
 namespace MeteoApp;
 
@@ -16,17 +14,7 @@ public partial class MeteoListPage : ContentPage
 
     private async void OnItemAdded(object sender, EventArgs e)
     {
-        string cityName = await DisplayPromptAsync(
-            AppResources.AddCityTitle,
-            AppResources.AddCityMessage);
-
-        if (!string.IsNullOrWhiteSpace(cityName))
-        {
-            if (BindingContext is MeteoListViewModel viewModel)
-            {
-                await viewModel.AddCityAsync(cityName);
-            }
-        }
+        await Navigation.PushAsync(new SearchCityPage());
     }
 
     private async void OnItemRemoved(object sender, EventArgs e)
@@ -57,7 +45,7 @@ public partial class MeteoListPage : ContentPage
     {
         var current = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
-        string newCulture = "en"; 
+        string newCulture = "en";
 
         if (current == "en")
             newCulture = "it";

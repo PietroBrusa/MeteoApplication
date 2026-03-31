@@ -87,6 +87,9 @@
       <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="MeteoItemPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Update="ViewModels\SearchCityPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
     </ItemGroup>
     <ItemGroup>
       <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="MeteoListPage.xaml.cs">
@@ -96,6 +99,9 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>AppResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="ViewModels\SearchCityPage.xaml.cs">
+        <DependentUpon>SearchCityPage.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
 </Project>
