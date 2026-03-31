@@ -1,45 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:MeteoApp.ViewModels"
              x:Class="MeteoApp.SearchCityPage"
-             Title="Cerca Città">
+             Title="Cerca Città"
+             BackgroundColor="#1E1E1E">
 
-    <ContentPage.BindingContext>
-        <vm:SearchCityViewModel />
-    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Chiudi" Clicked="OnCloseClicked" />
+    </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto, *">
-        <SearchBar Grid.Row="0"
-                   Placeholder="Inserisci città (es. Milano)"
-                   Text="{Binding SearchText}"
-                   SearchCommand="{Binding SearchCommand}" 
-                   Margin="10" />
+    <StackLayout Padding="15" Spacing="15">
 
-        <CollectionView Grid.Row="1" 
-                        ItemsSource="{Binding SearchResults}"
-                        Margin="10">
+        <SearchBar x:Name="CitySearchBar" 
+                   Placeholder="Scrivi il nome di una città..." 
+                   SearchButtonPressed="OnSearchPressed"
+                   TextColor="White"
+                   PlaceholderColor="LightGray"/>
+
+        <CollectionView x:Name="ResultsCollectionView" 
+                        SelectionMode="Single"
+                        SelectionChanged="OnCitySelected" 
+                        BackgroundColor="Transparent">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="5">
-                        <Frame CornerRadius="10" Padding="15" HasShadow="True" BackgroundColor="#2D2D2D">
-                            <Grid>
-                                <Label Text="{Binding DisplayName}" 
-                                       FontSize="18" 
-                                       FontAttributes="Bold"
-                                       TextColor="White"/>
-
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SearchCityViewModel}}, Path=SelectCityCommand}"
-                                        CommandParameter="{Binding .}"/>
-                                </Grid.GestureRecognizers>
-                            </Grid>
-                        </Frame>
-                    </Grid>
+                    <StackLayout Padding="10" Orientation="Horizontal">
+                        <Label Text="{Binding Name}" FontSize="18" TextColor="White" VerticalOptions="Center" />
+                        <Label Text="{Binding WeatherDescription}" FontSize="14" TextColor="LightGray" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                    </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
 
+    </StackLayout>
 </ContentPage>

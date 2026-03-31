@@ -14,7 +14,10 @@ public partial class MeteoListPage : ContentPage
 
     private async void OnItemAdded(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new SearchCityPage());
+        if (BindingContext is MeteoListViewModel viewModel)
+        {
+            await Navigation.PushModalAsync(new SearchCityPage(viewModel));
+        }
     }
 
     private async void OnItemRemoved(object sender, EventArgs e)
@@ -37,25 +40,23 @@ public partial class MeteoListPage : ContentPage
 
         if (BindingContext is MeteoListViewModel viewModel)
         {
-            await viewModel.LoadLocationsFromDatabaseAsync();
+            if (viewModel.Entries.Count == 0)
+            {
+                await viewModel.LoadLocationsFromDatabaseAsync();
+            }
         }
     }
 
     private void OnChangeLanguageClicked(object sender, EventArgs e)
     {
         var current = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-
         string newCulture = "en";
 
-        if (current == "en")
-            newCulture = "it";
-        else if (current == "it")
-            newCulture = "de";
-        else if (current == "de")
-            newCulture = "en";
+        if (current == "en") newCulture = "it";
+        else if (current == "it") newCulture = "de";
+        else if (current == "de") newCulture = "en";
 
         Console.WriteLine($"Cambio lingua da {current} a {newCulture}");
-
         App.LanguageService.SetLanguage(newCulture);
     }
 

@@ -21,26 +21,37 @@ namespace MeteoApp
     public class MeteoDatabase
     {
         private readonly SQLiteAsyncConnection _database;
+        private bool _initialized = false;
 
         public MeteoDatabase()
         {
             _database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+        }
 
-            _database.CreateTableAsync<MeteoLocation>().Wait();
+        private async Task Init()
+        {
+            if (!_initialized)
+            {
+                await _database.CreateTableAsync<MeteoLocation>();
+                _initialized = true;
+            }
         }
 
         public async Task<List<MeteoLocation>> GetLocationsAsync()
         {
+            await Init(); // Assicurati che sia inizializzato
             return await _database.Table<MeteoLocation>().ToListAsync();
         }
 
         public async Task<int> SaveLocationAsync(MeteoLocation location)
         {
+            await Init(); // Assicurati che sia inizializzato
             return await _database.InsertAsync(location);
         }
 
         public async Task<int> DeleteLocationAsync(int id)
         {
+            await Init(); // Assicurati che sia inizializzato
             return await _database.DeleteAsync<MeteoLocation>(id);
         }
     }

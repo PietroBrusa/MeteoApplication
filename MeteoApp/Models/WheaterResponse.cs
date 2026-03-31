@@ -1,4 +1,6 @@
-﻿public class Coord
+﻿using System.Collections.Generic;
+
+public class Coord
 {
     public double lon { get; set; }
     public double lat { get; set; }
@@ -56,4 +58,9 @@ public class WeatherResponse
     public int id { get; set; }
     public string name { get; set; }
     public int cod { get; set; }
+}
+
+public class WeatherFindResponse
+{
+    public List<WeatherResponse> list { get; set; }
 }
