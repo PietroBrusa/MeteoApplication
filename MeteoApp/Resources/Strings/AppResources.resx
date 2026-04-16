@@ -135,4 +135,52 @@
   <data name="PageTitleLocations" xml:space="preserve">
     <value>Meteo application</value>
   </data>
+  <data name="SearchCityTitle" xml:space="preserve">
+    <value>Search City</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Type a city name...</value>
+  </data>
+  <data name="CloseButton" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="NoCityFoundTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="NoCityFoundMessage" xml:space="preserve">
+    <value>No city found with this name. Try again.</value>
+  </data>
+  <data name="OkButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="WeatherDetailsTitle" xml:space="preserve">
+    <value>Weather Details</value>
+  </data>
+  <data name="TempMinLabel" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="TempMaxLabel" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="OrSelectFromMap" xml:space="preserve">
+    <value>Or tap on the map</value>
+  </data>
+  <data name="AddFromMapButton" xml:space="preserve">
+    <value>Add this city</value>
+  </data>
+  <data name="ThemeTitle" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="CurrentLocation" xml:space="preserve">
+    <value>Current Location ({0})</value>
+  </data>
 </root>

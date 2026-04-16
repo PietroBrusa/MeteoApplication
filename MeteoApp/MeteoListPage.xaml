@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
@@ -8,6 +8,8 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="+" Clicked="OnItemAdded" />
+        <ToolbarItem Text="°C/°F" Clicked="OnToggleTemperatureUnit" />
+        <ToolbarItem Text="{x:Static res:AppResources.ThemeTitle}" Clicked="OnThemeClicked" />
         <ToolbarItem Text="{x:Static res:AppResources.ChangeLanguage}" Clicked="OnChangeLanguageClicked" />
     </ContentPage.ToolbarItems>
 
@@ -15,58 +17,71 @@
         <models:WeatherImageConverter x:Key="WeatherImageConverter"/>
     </ContentPage.Resources>
 
-    <CollectionView ItemsSource="{Binding Entries}" 
-                    SelectionMode="Single"
-                    SelectionChanged="OnSelectionChanged">
+    <!-- Grid per sovrapporre l'ActivityIndicator alla lista (AS3) -->
+    <Grid>
 
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <SwipeView Threshold="100" >
-                    <SwipeView.RightItems>
-                        <SwipeItems Mode="Execute">
-                            <SwipeItem IsVisible="{Binding IsDeletable}"
-                                       Text="{x:Static res:AppResources.DeleteText}"
-                                       BackgroundColor="Red"
-                                       Clicked="OnItemRemoved"
-                                       CommandParameter="{Binding .}" />
-                        </SwipeItems>
-                    </SwipeView.RightItems>
+        <CollectionView ItemsSource="{Binding Entries}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnSelectionChanged">
 
-                    <Grid>
-                        <Image Source="{Binding WeatherCode, Converter={StaticResource WeatherImageConverter}}"
-                               Aspect="AspectFill">
-                            <Image.HeightRequest>
-                                <OnPlatform x:TypeArguments="x:Double">
-                                    <On Platform="iOS, Android" Value="100"/>
-                                </OnPlatform>
-                            </Image.HeightRequest>
-                        </Image>
-                        <BoxView Color="#80000000"/>
-                        <StackLayout Margin="15,10" Orientation="Vertical">
-                            <Label Text="{Binding Name}" 
-                                   FontSize="18" 
-                                   FontAttributes="Bold"
-                                   TextColor="White"/>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView Threshold="100">
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem IsVisible="{Binding IsDeletable}"
+                                           Text="{x:Static res:AppResources.DeleteText}"
+                                           BackgroundColor="{StaticResource DeleteColor}"
+                                           Clicked="OnItemRemoved"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
 
-                            <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,5,0,0">
-                                <Label Text="{Binding WeatherDescription}" 
-                                       FontSize="14" 
-                                       TextColor="#E0E0E0" 
-                                       VerticalOptions="Center"/>
-
-                                <Label Text="{Binding CurrentTemperature, StringFormat='{0:F1} °C'}" 
-                                       FontSize="16" 
+                        <Grid>
+                            <Image Source="{Binding WeatherCode, Converter={StaticResource WeatherImageConverter}}"
+                                   Aspect="AspectFill">
+                                <Image.HeightRequest>
+                                    <OnPlatform x:TypeArguments="x:Double">
+                                        <On Platform="iOS, Android" Value="100"/>
+                                    </OnPlatform>
+                                </Image.HeightRequest>
+                            </Image>
+                            <BoxView Color="{StaticResource ImageOverlay}"/>
+                            <StackLayout Margin="15,10" Orientation="Vertical">
+                                <Label Text="{Binding Name}"
+                                       FontSize="18"
                                        FontAttributes="Bold"
-                                       TextColor="White"
-                                       HorizontalOptions="EndAndExpand"
-                                       VerticalOptions="Center"/>
-                            </StackLayout>
-                        </StackLayout>
-                    </Grid>
-                </SwipeView>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
+                                       TextColor="{StaticResource White}"/>
 
-    </CollectionView>
+                                <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,5,0,0">
+                                    <Label Text="{Binding WeatherDescription}"
+                                           FontSize="14"
+                                           TextColor="{StaticResource ImageOverlaySubText}"
+                                           VerticalOptions="Center"/>
+
+                                    <!-- Usa TempDisplay per rispettare l'unità scelta (AS7) -->
+                                    <Label Text="{Binding TempDisplay}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource White}"
+                                           HorizontalOptions="EndAndExpand"
+                                           VerticalOptions="Center"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <!-- Indicatore di caricamento sovrapposto alla lista (AS3) -->
+        <ActivityIndicator
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+
+    </Grid>
 
 </ContentPage>

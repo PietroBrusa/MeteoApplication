@@ -112,5 +112,69 @@ namespace MeteoApp.Resources.Strings {
                 return ResourceManager.GetString("HelloMessage", resourceCulture);
             }
         }
+
+        public static string SearchCityTitle {
+            get { return ResourceManager.GetString("SearchCityTitle", resourceCulture); }
+        }
+
+        public static string SearchPlaceholder {
+            get { return ResourceManager.GetString("SearchPlaceholder", resourceCulture); }
+        }
+
+        public static string CloseButton {
+            get { return ResourceManager.GetString("CloseButton", resourceCulture); }
+        }
+
+        public static string NoCityFoundTitle {
+            get { return ResourceManager.GetString("NoCityFoundTitle", resourceCulture); }
+        }
+
+        public static string NoCityFoundMessage {
+            get { return ResourceManager.GetString("NoCityFoundMessage", resourceCulture); }
+        }
+
+        public static string OkButton {
+            get { return ResourceManager.GetString("OkButton", resourceCulture); }
+        }
+
+        public static string WeatherDetailsTitle {
+            get { return ResourceManager.GetString("WeatherDetailsTitle", resourceCulture); }
+        }
+
+        public static string TempMinLabel {
+            get { return ResourceManager.GetString("TempMinLabel", resourceCulture); }
+        }
+
+        public static string TempMaxLabel {
+            get { return ResourceManager.GetString("TempMaxLabel", resourceCulture); }
+        }
+
+        public static string OrSelectFromMap {
+            get { return ResourceManager.GetString("OrSelectFromMap", resourceCulture); }
+        }
+
+        public static string AddFromMapButton {
+            get { return ResourceManager.GetString("AddFromMapButton", resourceCulture); }
+        }
+
+        public static string ThemeTitle {
+            get { return ResourceManager.GetString("ThemeTitle", resourceCulture); }
+        }
+
+        public static string ThemeLight {
+            get { return ResourceManager.GetString("ThemeLight", resourceCulture); }
+        }
+
+        public static string ThemeDark {
+            get { return ResourceManager.GetString("ThemeDark", resourceCulture); }
+        }
+
+        public static string ThemeSystem {
+            get { return ResourceManager.GetString("ThemeSystem", resourceCulture); }
+        }
+
+        public static string CurrentLocation {
+            get { return ResourceManager.GetString("CurrentLocation", resourceCulture); }
+        }
     }
 }

@@ -4,9 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
+    <!-- Palette weather-themed (AS6) -->
+    <Color x:Key="Primary">#2196F3</Color>
+    <Color x:Key="Secondary">#BBDEFB</Color>
+    <Color x:Key="Tertiary">#0D47A1</Color>
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="Gray100">#E1E1E1</Color>
@@ -30,6 +31,17 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+
+    <!-- Colori personalizzati app meteo (AS6) -->
+    <Color x:Key="CardBackground">#EBF5FB</Color>
+    <Color x:Key="CardBackgroundDark">#1C2A35</Color>
+    <Color x:Key="TempWarm">#FF5722</Color>
+    <Color x:Key="TempCold">#1565C0</Color>
+
+    <!-- Colori per le card lista (overlay immagine + testo sovrapposto) -->
+    <Color x:Key="ImageOverlay">#80000000</Color>
+    <Color x:Key="ImageOverlaySubText">#E0E0E0</Color>
+    <Color x:Key="DeleteColor">#F44336</Color>
 
     <Color x:Key="Yellow100Accent">#F7B548</Color>
     <Color x:Key="Yellow200Accent">#FFD590</Color>

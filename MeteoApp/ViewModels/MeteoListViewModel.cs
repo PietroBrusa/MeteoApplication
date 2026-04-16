@@ -1,17 +1,28 @@
 ﻿using System.Collections.ObjectModel;
 using MeteoApp.Models;
+using MeteoApp.Resources.Strings;
 using Newtonsoft.Json;
 
 namespace MeteoApp
 {
     public class MeteoListViewModel : BaseViewModel
     {
+        private readonly SettingsService _settingsService = new SettingsService();
+
         ObservableCollection<MeteoLocation> _entries;
 
         public ObservableCollection<MeteoLocation> Entries
         {
             get { return _entries; }
             set { _entries = value; OnPropertyChanged(); }
+        }
+
+        // Indicatore di caricamento per mostrare l'ActivityIndicator (AS3)
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set { _isLoading = value; OnPropertyChanged(); }
         }
 
         public MeteoListViewModel()
@@ -21,32 +32,49 @@ namespace MeteoApp
 
         public async Task LoadLocationsFromDatabaseAsync()
         {
-            Entries.Clear();
+            IsLoading = true;
 
-            var savedLocations = await App.Database.GetLocationsAsync();
-            foreach (var loc in savedLocations)
+            try
             {
-                var updatedLoc = await FetchWeatherForCityAsync(loc.Name, loc.Id);
-                if (updatedLoc.WeatherDescription != "Error loading data")
+                Entries.Clear();
+
+                var savedLocations = await App.Database.GetLocationsAsync();
+                foreach (var loc in savedLocations)
                 {
-                    Entries.Add(updatedLoc);
+                    var updatedLoc = await FetchWeatherForCityAsync(loc.Name, loc.Id);
+                    if (updatedLoc.WeatherDescription != "Error loading data")
+                    {
+                        Entries.Add(updatedLoc);
+                    }
+                    else
+                    {
+                        Entries.Add(loc);
+                    }
                 }
-                else
+
+                string currentCityName = await GetGPSCityNameAsync();
+
+                if (!currentCityName.Contains("denied") && !currentCityName.Contains("error") && !currentCityName.Contains("disabled"))
                 {
-                    Entries.Add(loc);
+                    var currentLocationWeather = await FetchWeatherForCityAsync(currentCityName, 0);
+                    currentLocationWeather.Name = string.Format(AppResources.CurrentLocation, currentLocationWeather.Name);
+                    currentLocationWeather.IsDeletable = false;
+
+                    Entries.Insert(0, currentLocationWeather);
                 }
             }
-
-            string currentCityName = await GetGPSCityNameAsync();
-
-            if (!currentCityName.Contains("denied") && !currentCityName.Contains("error") && !currentCityName.Contains("disabled"))
+            finally
             {
-                var currentLocationWeather = await FetchWeatherForCityAsync(currentCityName, 0);
-                currentLocationWeather.Name = "Current Location (" + currentLocationWeather.Name + ")";
-                currentLocationWeather.IsDeletable = false;
-
-                Entries.Insert(0, currentLocationWeather);
+                IsLoading = false;
             }
+        }
+
+        // Alterna l'unità di temperatura e ricarica la lista (AS7)
+        public async Task ToggleTemperatureUnitAsync()
+        {
+            string newUnit = SettingsService.CurrentUnit == "C" ? "F" : "C";
+            _settingsService.SaveTemperatureUnit(newUnit);
+            await LoadLocationsFromDatabaseAsync();
         }
 
         public async Task AddCityAsync(string cityName)
@@ -91,6 +119,8 @@ namespace MeteoApp
                     Id = id,
                     Name = weatherData.name,
                     CurrentTemperature = weatherData.main.temp,
+                    TempMin = weatherData.main.temp_min,
+                    TempMax = weatherData.main.temp_max,
                     WeatherDescription = weatherData.weather[0].description,
                     WeatherCode = weatherData.weather[0].id,
                     Latitude = weatherData.coord.lat,

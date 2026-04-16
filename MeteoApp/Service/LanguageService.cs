@@ -16,6 +16,9 @@ namespace MeteoApp
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 
+            // Salva la lingua scelta in modo che persista al riavvio (AS7)
+            new SettingsService().SaveLanguage(cultureCode);
+
             LanguageChanged?.Invoke();
         }
     }

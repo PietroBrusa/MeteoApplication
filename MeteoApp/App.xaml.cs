@@ -23,11 +23,29 @@ public partial class App : Application
 
     public App()
     {
+        // Carica le preferenze salvate prima di costruire l'interfaccia (AS7)
+        var settingsService = new SettingsService();
+        settingsService.LoadTemperatureUnit();
+
+        // Applica il tema salvato (AS6 + AS7)
+        SettingsService.ApplyTheme(settingsService.LoadTheme());
+
+        var savedLanguage = settingsService.LoadLanguage();
+        if (!string.IsNullOrEmpty(savedLanguage))
+        {
+            var culture = new CultureInfo(savedLanguage);
+            CultureInfo.CurrentCulture = culture;
+            CultureInfo.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+        }
+        else
+        {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CurrentCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CurrentUICulture;
+        }
+
         InitializeComponent();
-
-        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CurrentCulture;
-        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CurrentUICulture;
-
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
