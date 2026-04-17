@@ -15,14 +15,12 @@
                    HorizontalOptions="Center"
                    HorizontalTextAlignment="Center"/>
 
-            <!-- Card temperatura principale (AS6: usa CardBackground da Colors.xaml) -->
             <Frame CornerRadius="15"
                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}"
                    Padding="20"
                    HasShadow="True">
                 <StackLayout Spacing="10" HorizontalOptions="Center">
 
-                    <!-- Temperatura attuale con unità dinamica (AS7) -->
                     <Label Text="{Binding MeteoLocation.TempDisplay}"
                            FontSize="48"
                            FontAttributes="Bold"
@@ -34,7 +32,6 @@
                            HorizontalOptions="Center"
                            TextColor="{StaticResource Gray500}"/>
 
-                    <!-- Min / Max temperatura (dal mockup del progetto) -->
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="Center"
                                  Spacing="30"

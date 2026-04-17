@@ -1,4 +1,4 @@
-﻿using MeteoApp.Models;
+using MeteoApp.Models;
 using SQLite;
 
 namespace MeteoApp
@@ -20,9 +20,11 @@ namespace MeteoApp
         public double TempMax { get; set; }
         public int WeatherCode { get; set; }
         public string WeatherDescription { get; set; }
+
+        // False for the GPS current-location entry, which cannot be deleted by the user
         public bool IsDeletable { get; set; } = true;
 
-        // Proprietà di visualizzazione calcolate (nessun setter = ignorate da SQLite-net-pcl)
+        // Computed display properties — no setter so SQLite-net ignores them
         public string TempDisplay => SettingsService.FormatTemperature(CurrentTemperature);
         public string TempMinDisplay => SettingsService.FormatTemperature(TempMin);
         public string TempMaxDisplay => SettingsService.FormatTemperature(TempMax);

@@ -17,7 +17,6 @@
         <models:WeatherImageConverter x:Key="WeatherImageConverter"/>
     </ContentPage.Resources>
 
-    <!-- Grid per sovrapporre l'ActivityIndicator alla lista (AS3) -->
     <Grid>
 
         <CollectionView ItemsSource="{Binding Entries}"
@@ -59,7 +58,6 @@
                                            TextColor="{StaticResource ImageOverlaySubText}"
                                            VerticalOptions="Center"/>
 
-                                    <!-- Usa TempDisplay per rispettare l'unità scelta (AS7) -->
                                     <Label Text="{Binding TempDisplay}"
                                            FontSize="16"
                                            FontAttributes="Bold"
@@ -75,7 +73,6 @@
 
         </CollectionView>
 
-        <!-- Indicatore di caricamento sovrapposto alla lista (AS3) -->
         <ActivityIndicator
             IsRunning="{Binding IsLoading}"
             IsVisible="{Binding IsLoading}"

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,6 +10,7 @@ namespace MeteoApp
     {
         public const string DatabaseFilename = "meteo_locations.db3";
 
+        // SharedCache allows multiple connections to read the same DB file
         public const SQLite.SQLiteOpenFlags Flags =
             SQLite.SQLiteOpenFlags.ReadWrite |
             SQLite.SQLiteOpenFlags.Create |
@@ -28,6 +29,7 @@ namespace MeteoApp
             _database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
         }
 
+        // Lazy initializer — creates the table only on first use
         private async Task Init()
         {
             if (!_initialized)
@@ -39,19 +41,19 @@ namespace MeteoApp
 
         public async Task<List<MeteoLocation>> GetLocationsAsync()
         {
-            await Init(); // Assicurati che sia inizializzato
+            await Init();
             return await _database.Table<MeteoLocation>().ToListAsync();
         }
 
         public async Task<int> SaveLocationAsync(MeteoLocation location)
         {
-            await Init(); // Assicurati che sia inizializzato
+            await Init();
             return await _database.InsertAsync(location);
         }
 
         public async Task<int> DeleteLocationAsync(int id)
         {
-            await Init(); // Assicurati che sia inizializzato
+            await Init();
             return await _database.DeleteAsync<MeteoLocation>(id);
         }
     }

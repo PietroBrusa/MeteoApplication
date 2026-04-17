@@ -15,7 +15,7 @@ public partial class SearchCityPage : ContentPage
         InitializeComponent();
         _viewModel = viewModel;
 
-        // Centra la mappa sulla Svizzera come posizione di default
+        // Default map view centered on Switzerland
         var defaultLocation = new Location(46.8, 8.2);
         SelectionMap.MoveToRegion(MapSpan.FromCenterAndRadius(defaultLocation, Distance.FromKilometers(400)));
     }
@@ -57,25 +57,25 @@ public partial class SearchCityPage : ContentPage
             await Navigation.PopModalAsync();
         }
 
+        // Clear selection so the same item can be tapped again
         if (sender is CollectionView cv)
         {
             cv.SelectedItem = null;
         }
     }
 
-    // Gestisce il tap sulla mappa (AS5 - MapClicked + geocoding inverso)
+    // Handles a tap on the map: reverse geocodes the coordinates to a city name
     private async void OnMapClicked(object sender, MapClickedEventArgs e)
     {
         try
         {
-            // Geocoding inverso: coordinate → indirizzo (AS5)
             var placemarks = await Geocoding.GetPlacemarksAsync(
                 e.Location.Latitude,
                 e.Location.Longitude);
             var placemark = placemarks?.FirstOrDefault();
             if (placemark == null) return;
 
-            // Prende il nome più specifico disponibile
+            // Use the most specific available place name
             string cityName = placemark.Locality
                 ?? placemark.SubAdminArea
                 ?? placemark.AdminArea
@@ -83,11 +83,10 @@ public partial class SearchCityPage : ContentPage
 
             if (string.IsNullOrEmpty(cityName)) return;
 
-            // Recupera i dati meteo per la città trovata
             _selectedMapLocation = await _viewModel.FetchWeatherForCityAsync(cityName, 0);
             if (_selectedMapLocation.WeatherDescription == "Error loading data") return;
 
-            // Aggiorna il pin sulla mappa
+            // Drop a pin and show the confirm bar
             SelectionMap.Pins.Clear();
             SelectionMap.Pins.Add(new Pin
             {
@@ -95,7 +94,6 @@ public partial class SearchCityPage : ContentPage
                 Location = e.Location
             });
 
-            // Mostra la barra di conferma con il nome della città
             SelectedCityLabel.Text = _selectedMapLocation.Name;
             ConfirmFrame.IsVisible = true;
         }
@@ -105,12 +103,12 @@ public partial class SearchCityPage : ContentPage
         }
     }
 
-    // Aggiunge la città selezionata dalla mappa alla lista
+    // Saves the map-selected city and dismisses the page
     private async void OnAddFromMapClicked(object sender, EventArgs e)
     {
         if (_selectedMapLocation != null)
         {
-            // try/catch obbligatorio negli async void handler (AS3)
+            // try/catch required in async void event handlers
             try
             {
                 await _viewModel.AddCityAsync(_selectedMapLocation.Name);

@@ -1,4 +1,4 @@
-﻿using MeteoApp.Resources.Strings;
+using MeteoApp.Resources.Strings;
 using Microsoft.Maui.Controls;
 
 namespace MeteoApp;
@@ -26,7 +26,7 @@ public partial class MeteoListPage : ContentPage
 
         if (entryToDelete != null && BindingContext is MeteoListViewModel viewModel)
         {
-            // try/catch obbligatorio negli async void handler (AS3)
+            // try/catch required in async void event handlers
             try
             {
                 await viewModel.RemoveCityAsync(entryToDelete.Id);
@@ -44,9 +44,9 @@ public partial class MeteoListPage : ContentPage
 
         if (BindingContext is MeteoListViewModel viewModel)
         {
+            // Load data only on first appearance to avoid redundant API calls
             if (viewModel.Entries.Count == 0)
             {
-                // try/catch obbligatorio negli async void handler (AS3)
                 try
                 {
                     await viewModel.LoadLocationsFromDatabaseAsync();
@@ -59,7 +59,7 @@ public partial class MeteoListPage : ContentPage
         }
     }
 
-    // Mostra un ActionSheet per scegliere il tema (AS6 + AS7)
+    // Shows an ActionSheet to let the user pick Light / Dark / System theme
     private async void OnThemeClicked(object sender, EventArgs e)
     {
         string action = await DisplayActionSheet(
@@ -83,7 +83,7 @@ public partial class MeteoListPage : ContentPage
         SettingsService.ApplyTheme(themeKey);
     }
 
-    // Alterna tra °C e °F e ricarica la lista (AS7)
+    // Toggles °C / °F and refreshes the list
     private async void OnToggleTemperatureUnit(object sender, EventArgs e)
     {
         if (BindingContext is MeteoListViewModel viewModel)
@@ -92,6 +92,7 @@ public partial class MeteoListPage : ContentPage
         }
     }
 
+    // Cycles through en → it → de and rebuilds the UI in the new language
     private void OnChangeLanguageClicked(object sender, EventArgs e)
     {
         var current = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
@@ -101,7 +102,7 @@ public partial class MeteoListPage : ContentPage
         else if (current == "it") newCulture = "de";
         else if (current == "de") newCulture = "en";
 
-        Console.WriteLine($"Cambio lingua da {current} a {newCulture}");
+        Console.WriteLine($"Language change: {current} → {newCulture}");
         App.LanguageService.SetLanguage(newCulture);
     }
 
@@ -116,6 +117,7 @@ public partial class MeteoListPage : ContentPage
             });
         }
 
+        // Clear selection so the same item can be tapped again
         if (sender is CollectionView cv)
         {
             cv.SelectedItem = null;

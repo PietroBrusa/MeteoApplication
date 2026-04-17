@@ -1,9 +1,10 @@
-﻿using Android.Graphics;
+using Android.Graphics;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
 
 namespace MeteoApp;
 
+// QueryProperty lets shell navigation pass MeteoLocation as a page parameter
 [QueryProperty(nameof(MeteoLocation), "MeteoLocation")]
 public partial class MeteoItemPage : ContentPage
 {
@@ -26,6 +27,7 @@ public partial class MeteoItemPage : ContentPage
         BindingContext = this;
     }
 
+    // Centers the map on the city and drops a pin when the location is set
     private void UpdateMap()
     {
         if (MeteoLocation != null && CityMap != null)

@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using MeteoApp.Models;
 using MeteoApp.Resources.Strings;
 using Newtonsoft.Json;
@@ -17,7 +17,7 @@ namespace MeteoApp
             set { _entries = value; OnPropertyChanged(); }
         }
 
-        // Indicatore di caricamento per mostrare l'ActivityIndicator (AS3)
+        // Controls ActivityIndicator visibility during async operations
         private bool _isLoading;
         public bool IsLoading
         {
@@ -30,6 +30,7 @@ namespace MeteoApp
             Entries = new ObservableCollection<MeteoLocation>();
         }
 
+        // Loads saved cities from DB, refreshes their weather, then prepends the GPS location
         public async Task LoadLocationsFromDatabaseAsync()
         {
             IsLoading = true;
@@ -42,18 +43,16 @@ namespace MeteoApp
                 foreach (var loc in savedLocations)
                 {
                     var updatedLoc = await FetchWeatherForCityAsync(loc.Name, loc.Id);
+                    // Fall back to cached data if the API call fails
                     if (updatedLoc.WeatherDescription != "Error loading data")
-                    {
                         Entries.Add(updatedLoc);
-                    }
                     else
-                    {
                         Entries.Add(loc);
-                    }
                 }
 
                 string currentCityName = await GetGPSCityNameAsync();
 
+                // Only insert GPS entry when permission and location are available
                 if (!currentCityName.Contains("denied") && !currentCityName.Contains("error") && !currentCityName.Contains("disabled"))
                 {
                     var currentLocationWeather = await FetchWeatherForCityAsync(currentCityName, 0);
@@ -69,7 +68,7 @@ namespace MeteoApp
             }
         }
 
-        // Alterna l'unità di temperatura e ricarica la lista (AS7)
+        // Toggles °C / °F and reloads the list with the new unit
         public async Task ToggleTemperatureUnitAsync()
         {
             string newUnit = SettingsService.CurrentUnit == "C" ? "F" : "C";
@@ -93,12 +92,10 @@ namespace MeteoApp
             await App.Database.DeleteLocationAsync(id);
             var locationToRemove = Entries.FirstOrDefault(l => l.Id == id);
             if (locationToRemove != null)
-            {
                 Entries.Remove(locationToRemove);
-            }
         }
 
-        // METODO CLASSICO PER SCARICARE UNA CITTÀ SPECIFICA (E SALVARLA)
+        // Calls the /weather endpoint and maps the response to a MeteoLocation
         public async Task<MeteoLocation> FetchWeatherForCityAsync(string cityName, int id)
         {
             using HttpClient client = new HttpClient();
@@ -106,7 +103,6 @@ namespace MeteoApp
             string encodedCity = Uri.EscapeDataString(cityName);
             string lang = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
-            // Endpoint /weather
             string url = $"https://api.openweathermap.org/data/2.5/weather?q={encodedCity}&appid={Secret.OpenWeatherMapApiKey}&units=metric&lang={lang}";
 
             try
@@ -133,7 +129,7 @@ namespace MeteoApp
             }
         }
 
-        // NUOVO METODO PER CERCARE LE OMONIMIE (PER LA SEARCH PAGE)
+        // Calls /find endpoint — returns multiple matches to resolve city name ambiguity
         public async Task<List<MeteoLocation>> SearchCitiesAsync(string query)
         {
             var results = new List<MeteoLocation>();
@@ -142,7 +138,6 @@ namespace MeteoApp
             string encodedCity = Uri.EscapeDataString(query);
             string lang = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
-            // Endpoint /find
             string url = $"https://api.openweathermap.org/data/2.5/find?q={encodedCity}&appid={Secret.OpenWeatherMapApiKey}&units=metric&lang={lang}";
 
             try
@@ -171,12 +166,13 @@ namespace MeteoApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Errore durante la ricerca: {ex.Message}");
+                Console.WriteLine($"Search error: {ex.Message}");
             }
 
             return results;
         }
 
+        // Requests location permission and resolves GPS coordinates to a city name
         public async Task<string> GetGPSCityNameAsync()
         {
             try
@@ -194,6 +190,7 @@ namespace MeteoApp
 
                 if (location != null)
                 {
+                    // Reverse geocoding: coordinates → placemark
                     var placemarks = await Geocoding.Default.GetPlacemarksAsync(location.Latitude, location.Longitude);
                     var placemark = placemarks?.FirstOrDefault();
                     if (placemark != null) return $"{placemark.Locality}";

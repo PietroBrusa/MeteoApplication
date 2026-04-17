@@ -6,10 +6,10 @@ public class SettingsService
     const string TemperatureUnitKey = "temperature_unit";
     const string ThemeKey = "app_theme";
 
-    // Stato corrente dell'unità, accessibile staticamente per le proprietà di display dei modelli
+    // Static so MeteoLocation computed props can read it without dependency injection
     public static string CurrentUnit { get; private set; } = "C";
 
-    // --- Lingua ---
+    // --- Language ---
 
     public string LoadLanguage()
         => Preferences.Get(LanguageKey, string.Empty);
@@ -17,7 +17,7 @@ public class SettingsService
     public void SaveLanguage(string cultureCode)
         => Preferences.Set(LanguageKey, cultureCode);
 
-    // --- Unità di temperatura ---
+    // --- Temperature unit ---
 
     public void LoadTemperatureUnit()
     {
@@ -30,7 +30,7 @@ public class SettingsService
         Preferences.Set(TemperatureUnitKey, unit);
     }
 
-    // --- Tema (AS6 + AS7) ---
+    // --- Theme ---
 
     public string LoadTheme()
         => Preferences.Get(ThemeKey, "System");
@@ -38,6 +38,7 @@ public class SettingsService
     public void SaveTheme(string theme)
         => Preferences.Set(ThemeKey, theme);
 
+    // Applies the chosen theme immediately to the running app
     public static void ApplyTheme(string theme)
     {
         Application.Current.UserAppTheme = theme switch
@@ -48,8 +49,9 @@ public class SettingsService
         };
     }
 
-    // --- Formattazione ---
+    // --- Formatting ---
 
+    // Converts Celsius to the current unit and returns a display string
     public static string FormatTemperature(double celsius)
     {
         if (CurrentUnit == "F")

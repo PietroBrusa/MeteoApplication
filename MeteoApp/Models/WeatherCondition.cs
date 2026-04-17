@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MeteoApp.Models
 {
+    // Normalized weather states derived from OpenWeatherMap condition codes
     public enum WeatherCondition
     {
         Thunderstorm,
@@ -19,53 +20,41 @@ namespace MeteoApp.Models
 
     public static class WeatherCodeMapper
     {
+        // Maps an OWM numeric code to a WeatherCondition enum value
         public static WeatherCondition GetConditionFromCode(int code)
         {
             return code switch
             {
-                // Thunderstorm (200-299)
                 >= 200 and <= 299 => WeatherCondition.Thunderstorm,
-
-                // Drizzle (300-399)
                 >= 300 and <= 399 => WeatherCondition.Drizzle,
-
-                // Rain (500-599)
                 >= 500 and <= 599 => WeatherCondition.Rain,
-
-                // Snow (600-699)
                 >= 600 and <= 699 => WeatherCondition.Snow,
-
-                // Atmosphere (700-799) - Mist, Fog, etc.
-                >= 700 and <= 799 => WeatherCondition.Fog,
-
-                // Clear (800)
-                800 => WeatherCondition.Clear,
-
-                // Clouds (801-899)
+                >= 700 and <= 799 => WeatherCondition.Fog,  // Mist, smoke, haze, etc.
+                800               => WeatherCondition.Clear,
                 >= 801 and <= 899 => code switch
                 {
-                    804 => WeatherCondition.Overcast,
-                    _ => WeatherCondition.Clouds
+                    804 => WeatherCondition.Overcast,        // 100% cloud cover
+                    _   => WeatherCondition.Clouds
                 },
-
                 _ => WeatherCondition.Unknown
             };
         }
 
+        // Returns the asset path for a given condition code
         public static string GetImageName(int code)
         {
             var condition = GetConditionFromCode(code);
             var filename = condition switch
             {
                 WeatherCondition.Thunderstorm => "storm.png",
-                WeatherCondition.Drizzle => "rainy.png",
-                WeatherCondition.Rain => "rainy.png",
-                WeatherCondition.Snow => "rainy.png",
-                WeatherCondition.Fog => "overcast.png",
-                WeatherCondition.Clear => "sunny_clear.png",
-                WeatherCondition.Clouds => "sunny_cloudy.png",
-                WeatherCondition.Overcast => "overcast.png",
-                _ => "default_weather.png"
+                WeatherCondition.Drizzle      => "rainy.png",
+                WeatherCondition.Rain         => "rainy.png",
+                WeatherCondition.Snow         => "rainy.png",
+                WeatherCondition.Fog          => "overcast.png",
+                WeatherCondition.Clear        => "sunny_clear.png",
+                WeatherCondition.Clouds       => "sunny_cloudy.png",
+                WeatherCondition.Overcast     => "overcast.png",
+                _                             => "default_weather.png"
             };
 
             return $"Weather/{filename}";
