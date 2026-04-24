@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
+             xmlns:local="clr-namespace:MeteoApp"
              x:Class="MeteoApp.MeteoItemPage"
              Title="{x:Static res:AppResources.WeatherDetailsTitle}">
 
@@ -60,8 +61,13 @@
                                    HorizontalOptions="Center"
                                    TextColor="{StaticResource TempWarm}"/>
                         </StackLayout>
-
                     </StackLayout>
+
+					<BlazorWebView HostPage="wwwroot/index.html">
+						<BlazorWebView.RootComponents>
+                            <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Pages.Counter}" />
+						</BlazorWebView.RootComponents>
+					</BlazorWebView>
 
                 </StackLayout>
             </Frame>

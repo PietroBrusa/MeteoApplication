@@ -1,6 +1,8 @@
 using Android.Graphics;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
+using System;
 
 namespace MeteoApp;
 

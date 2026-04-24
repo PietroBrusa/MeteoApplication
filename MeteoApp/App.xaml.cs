@@ -21,8 +21,11 @@ public partial class App : Application
 
     public static readonly LanguageService LanguageService = new();
 
-    public App()
+    public App(IServiceProvider provider)
     {
+        var parameterService = provider.GetService<ParameterService>();
+        parameterService?.SetData(123);
+
         // Load persisted settings before building the UI
         var settingsService = new SettingsService();
         settingsService.LoadTemperatureUnit();
