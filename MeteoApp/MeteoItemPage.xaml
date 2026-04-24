@@ -14,7 +14,11 @@
                    FontSize="32"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center"/>
+                   HorizontalTextAlignment="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLocationNameTapped"/>
+                </Label.GestureRecognizers>
+            </Label>
 
             <Frame CornerRadius="15"
                    BackgroundColor="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}"
@@ -62,12 +66,6 @@
                                    TextColor="{StaticResource TempWarm}"/>
                         </StackLayout>
                     </StackLayout>
-
-					<BlazorWebView HostPage="wwwroot/index.html">
-						<BlazorWebView.RootComponents>
-                            <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Pages.Counter}" />
-						</BlazorWebView.RootComponents>
-					</BlazorWebView>
 
                 </StackLayout>
             </Frame>

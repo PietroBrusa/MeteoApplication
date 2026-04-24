@@ -109,7 +109,7 @@ namespace MeteoApp
             {
                 string responseJson = await client.GetStringAsync(url);
                 var weatherData = JsonConvert.DeserializeObject<WeatherResponse>(responseJson);
-
+                
                 return new MeteoLocation
                 {
                     Id = id,
@@ -120,7 +120,11 @@ namespace MeteoApp
                     WeatherDescription = weatherData.weather[0].description,
                     WeatherCode = weatherData.weather[0].id,
                     Latitude = weatherData.coord.lat,
-                    Longitude = weatherData.coord.lon
+                    Longitude = weatherData.coord.lon,
+                    WindSpeed = weatherData.wind.speed,
+                    Humidity = weatherData.main.humidity,
+                    Sunrise = DateTimeOffset.FromUnixTimeSeconds(weatherData.sys.sunrise).UtcDateTime,
+                    Sunset = DateTimeOffset.FromUnixTimeSeconds(weatherData.sys.sunset).UtcDateTime,
                 };
             }
             catch (Exception ex)

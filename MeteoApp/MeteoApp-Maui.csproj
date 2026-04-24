@@ -85,6 +85,9 @@
       <MauiImage Include="Resources\Images\Weather\sunny_cloudy.png" />
     </ItemGroup>
     <ItemGroup>
+      <MauiXaml Update="MeteoDetailPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="MeteoItemPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>

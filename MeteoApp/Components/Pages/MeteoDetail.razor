@@ -1,0 +1,59 @@
+﻿@page "/meteo-detail"
+@inject MeteoLocationService LocationService
+
+@if (location is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="detail-container">
+        <h1>@location.Name</h1>
+
+        <div class="temp-card">
+            <span class="temp-main">@location.TempDisplay</span>
+            <span class="temp-desc">@location.WeatherDescription</span>
+
+            <div class="temp-range">
+                <div class="temp-min">
+                    <small>Min</small>
+                    <strong>@location.TempMinDisplay</strong>
+                </div>
+                <div class="temp-max">
+                    <small>Max</small>
+                    <strong>@location.TempMaxDisplay</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extended detail sections -->
+        <div class="detail-card">
+            <h3>💧 Humidity</h3>
+            <p>@location.Humidity%</p>
+        </div>
+
+        <div class="detail-card">
+            <h3>💨 Wind</h3>
+            <p>@location.WindSpeed km/h</p>
+        </div>
+
+        <div class="detail-card">
+            <h3>🌅 Sunrise / Sunset</h3>
+            <p>@location.Sunrise — @location.Sunset</p>
+        </div>
+    </div>
+}
+
+@code {
+    private MeteoLocation? location;
+
+    protected override void OnInitialized()
+    {
+        location = LocationService.CurrentLocation;
+        LocationService.OnLocationChanged += () =>
+        {
+            location = LocationService.CurrentLocation;
+            InvokeAsync(StateHasChanged);
+        };
+    }
+}

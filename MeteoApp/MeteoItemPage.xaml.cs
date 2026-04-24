@@ -46,4 +46,9 @@ public partial class MeteoItemPage : ContentPage
             });
         }
     }
+
+    private async void OnLocationNameTapped(object sender, TappedEventArgs e)
+    {
+        await Navigation.PushAsync(new MeteoDetailPage(MeteoLocation));
+    }
 }
