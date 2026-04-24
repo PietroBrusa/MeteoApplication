@@ -15,11 +15,10 @@ public partial class MeteoDetailPage : ContentPage
         Location = location;
         BindingContext = this;
 
-        // Pass location data to Blazor via a shared service
-        var locationService = Handler?.MauiContext?.Services
+        var locationService = IPlatformApplication.Current?.Services
             .GetService<MeteoLocationService>();
 
         if (locationService != null)
-            locationService.CurrentLocation = location;
+            locationService.SetLocation(location);
     }
 }

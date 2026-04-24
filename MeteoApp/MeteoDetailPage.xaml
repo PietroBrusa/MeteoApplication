@@ -8,7 +8,7 @@
 	
     <BlazorWebView x:Name="DetailWebView" HostPage="wwwroot/index.html">
         <BlazorWebView.RootComponents>
-            <RootComponent Selector="#app" ComponentType="{x:Type local:Components.MeteoDetail}" />
+            <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Pages.MeteoDetail}" />
         </BlazorWebView.RootComponents>
     </BlazorWebView>
 	
