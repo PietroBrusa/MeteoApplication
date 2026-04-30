@@ -17,6 +17,7 @@ public static class MauiProgram
 			});
 
         builder.Services.AddSingleton<MeteoLocationService>();
+        builder.Services.AddSingleton<WeatherApiService>();
         builder.Services.AddMauiBlazorWebView();
 		
 

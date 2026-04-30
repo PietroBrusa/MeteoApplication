@@ -84,3 +84,102 @@ h1:focus {
         padding-left: env(safe-area-inset-left);
     }
 }
+
+/* Blazor weather detail page */
+.detail-container {
+    padding: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-container h1 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    color: #2196F3;
+    margin: 0 0 8px 0;
+}
+
+.temp-card {
+    background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.25);
+}
+
+.temp-main {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.temp-desc {
+    font-size: 16px;
+    text-transform: capitalize;
+    margin-top: 8px;
+    opacity: 0.9;
+}
+
+.temp-range {
+    display: flex;
+    gap: 32px;
+    margin-top: 16px;
+}
+
+.temp-min, .temp-max {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.temp-min small, .temp-max small {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.temp-min strong, .temp-max strong {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.detail-card {
+    background-color: #EBF5FB;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.detail-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #0D47A1;
+}
+
+.detail-card p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #212121;
+}
+
+@media (prefers-color-scheme: dark) {
+    .detail-container h1 {
+        color: #BBDEFB;
+    }
+    .detail-card {
+        background-color: #1C2A35;
+    }
+    .detail-card h3 {
+        color: #BBDEFB;
+    }
+    .detail-card p {
+        color: #FFFFFF;
+    }
+}

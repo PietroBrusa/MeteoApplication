@@ -59,25 +59,6 @@
 	</ItemGroup>
 
     <ItemGroup>
-      <None Remove="Models\" />
-      <None Remove="Resources\Images\Weather\overcast.png" />
-      <None Remove="Resources\Images\Weather\rainy.png" />
-      <None Remove="Resources\Images\Weather\storm.png" />
-      <None Remove="Resources\Images\Weather\sunny_clear.png" />
-      <None Remove="Resources\Images\Weather\sunny_cloudy.png" />
-      <None Remove="sqlite-net-pcl" />
-      <None Remove="Xam.Plugin.Geolocator" />
-      <None Remove="Resources\.DS_Store" />
-      <None Remove="Xam.Plugins.Notifier" />
-      <None Remove="Acr.UserDialogs" />
-      <None Remove="SQLitePCLRaw.bundle_green" />
-      <None Remove="Newtonsoft.Json" />
-      <None Remove="Plugin.LocalNotification" />
-    </ItemGroup>
-    <ItemGroup>
-      <BundleResource Include="Resources\.DS_Store" />
-    </ItemGroup>
-    <ItemGroup>
       <MauiImage Include="Resources\Images\Weather\overcast.png" />
       <MauiImage Include="Resources\Images\Weather\rainy.png" />
       <MauiImage Include="Resources\Images\Weather\storm.png" />
@@ -88,24 +69,12 @@
       <MauiXaml Update="MeteoDetailPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
-      <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="MeteoItemPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="ViewModels\SearchCityPage.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </MauiXaml>
     </ItemGroup>
     <ItemGroup>
-      <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="MeteoListPage.xaml.cs">
-        <DependentUpon>MeteoListPage.xaml</DependentUpon>
-      </Compile>
       <Compile Update="Resources\Strings\AppResources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>AppResources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="ViewModels\SearchCityPage.xaml.cs">
-        <DependentUpon>SearchCityPage.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
     <ItemGroup>

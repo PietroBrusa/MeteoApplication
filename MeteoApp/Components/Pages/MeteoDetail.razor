@@ -1,5 +1,4 @@
-﻿@page "/meteo-detail"
-@inject MeteoLocationService LocationService
+﻿@inject MeteoLocationService LocationService
 
 @if (location is null)
 {
@@ -29,17 +28,17 @@ else
         <!-- Extended detail sections -->
         <div class="detail-card">
             <h3>💧 Humidity</h3>
-            <p>@location.Humidity%</p>
+            <p>@location.HumidityDisplay</p>
         </div>
 
         <div class="detail-card">
             <h3>💨 Wind</h3>
-            <p>@location.WindSpeed km/h</p>
+            <p>@location.WindSpeedDisplay</p>
         </div>
 
         <div class="detail-card">
             <h3>🌅 Sunrise / Sunset</h3>
-            <p>@location.Sunrise — @location.Sunset</p>
+            <p>@location.SunriseDisplay — @location.SunsetDisplay</p>
         </div>
     </div>
 }

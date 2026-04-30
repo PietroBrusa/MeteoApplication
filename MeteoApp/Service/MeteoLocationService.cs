@@ -1,7 +1,4 @@
 ﻿using MeteoApp;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 public class MeteoLocationService
 {

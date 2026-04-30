@@ -1,13 +1,8 @@
-using Android.Graphics;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
-using System;
 
 namespace MeteoApp;
 
-// QueryProperty lets shell navigation pass MeteoLocation as a page parameter
-[QueryProperty(nameof(MeteoLocation), "MeteoLocation")]
 public partial class MeteoItemPage : ContentPage
 {
     MeteoLocation meteoLocation;

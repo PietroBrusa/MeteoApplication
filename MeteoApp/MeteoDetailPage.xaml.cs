@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MeteoApp;
+﻿namespace MeteoApp;
 
 public partial class MeteoDetailPage : ContentPage
 {
