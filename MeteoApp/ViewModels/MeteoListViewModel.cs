@@ -7,6 +7,8 @@ namespace MeteoApp
     {
         private readonly SettingsService _settingsService = new SettingsService();
         private readonly WeatherApiService _weatherApi;
+        private readonly NotificationService _notificationService;
+        private readonly AppwriteSyncService _appwriteSync;
 
         ObservableCollection<MeteoLocation> _entries;
 
@@ -26,8 +28,10 @@ namespace MeteoApp
 
         public MeteoListViewModel()
         {
-            // Resolve the singleton service registered in MauiProgram (slide 5.2 §11)
+            // Resolve singletons registered in MauiProgram (slide 5.2 §11)
             _weatherApi = IPlatformApplication.Current!.Services.GetRequiredService<WeatherApiService>();
+            _notificationService = IPlatformApplication.Current!.Services.GetRequiredService<NotificationService>();
+            _appwriteSync = IPlatformApplication.Current!.Services.GetRequiredService<AppwriteSyncService>();
             Entries = new ObservableCollection<MeteoLocation>();
         }
 
@@ -46,9 +50,17 @@ namespace MeteoApp
                     var updatedLoc = await FetchWeatherForCityAsync(loc.Name, loc.Id);
                     // Fall back to cached data if the API call fails
                     if (updatedLoc.WeatherDescription != "Error loading data")
+                    {
+                        // Preserve user-configured per-location settings (the API doesn't return them)
+                        updatedLoc.NotificationsEnabled = loc.NotificationsEnabled;
+                        updatedLoc.TempThresholdMin = loc.TempThresholdMin;
+                        updatedLoc.TempThresholdMax = loc.TempThresholdMax;
                         Entries.Add(updatedLoc);
+                    }
                     else
+                    {
                         Entries.Add(loc);
+                    }
                 }
 
                 string currentCityName = await GetGPSCityNameAsync();
@@ -85,13 +97,26 @@ namespace MeteoApp
             {
                 await App.Database.SaveLocationAsync(newLocation);
                 Entries.Add(newLocation);
+
+                // Push to cloud — best-effort, never blocks the user
+                var token = _notificationService.GetCachedToken();
+                var docId = await _appwriteSync.SyncLocationAsync(newLocation, token);
+                if (!string.IsNullOrEmpty(docId) && docId != newLocation.AppwriteDocumentId)
+                {
+                    newLocation.AppwriteDocumentId = docId;
+                    await App.Database.UpdateLocationAsync(newLocation);
+                }
             }
         }
 
         public async Task RemoveCityAsync(int id)
         {
-            await App.Database.DeleteLocationAsync(id);
+            // Delete cloud copy first (still works if it fails)
             var locationToRemove = Entries.FirstOrDefault(l => l.Id == id);
+            if (locationToRemove != null && !string.IsNullOrEmpty(locationToRemove.AppwriteDocumentId))
+                await _appwriteSync.DeleteLocationAsync(locationToRemove.AppwriteDocumentId);
+
+            await App.Database.DeleteLocationAsync(id);
             if (locationToRemove != null)
                 Entries.Remove(locationToRemove);
         }

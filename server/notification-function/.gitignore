@@ -1,0 +1,7 @@
+node_modules/
+.env
+.env.local
+serviceAccountKey.json
+function.zip
+function.tar.gz
+*.log

@@ -11,7 +11,13 @@ namespace MeteoApp
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public bool NotificationsEnabled { get; set; }
+        // Notification thresholds: a notification is triggered when current temp is
+        // below TempThresholdMin or above TempThresholdMax. Defaults: 0°C / 30°C.
+        public double TempThresholdMin { get; set; } = 0;
+        public double TempThresholdMax { get; set; } = 30;
         public bool IsDeletable { get; set; } = true;
+        // Cloud document id (Appwrite) — empty until first sync; used to update/delete remotely
+        public string AppwriteDocumentId { get; set; } = string.Empty;
 
         public double CurrentTemperature { get; set; }
         public double TempMin { get; set; }

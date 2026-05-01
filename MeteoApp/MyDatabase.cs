@@ -51,6 +51,12 @@ namespace MeteoApp
             return await _database.InsertAsync(location);
         }
 
+        public async Task<int> UpdateLocationAsync(MeteoLocation location)
+        {
+            await Init();
+            return await _database.UpdateAsync(location);
+        }
+
         public async Task<int> DeleteLocationAsync(int id)
         {
             await Init();

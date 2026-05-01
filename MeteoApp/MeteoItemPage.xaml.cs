@@ -46,4 +46,12 @@ public partial class MeteoItemPage : ContentPage
     {
         await Navigation.PushAsync(new MeteoDetailPage(MeteoLocation));
     }
+
+    // Opens the per-location notification settings page (thresholds + toggle).
+    // Disabled for the GPS entry since it isn't persisted in the local DB.
+    private async void OnSettingsClicked(object sender, EventArgs e)
+    {
+        if (MeteoLocation == null || !MeteoLocation.IsDeletable) return;
+        await Navigation.PushAsync(new LocationSettingsPage(MeteoLocation));
+    }
 }

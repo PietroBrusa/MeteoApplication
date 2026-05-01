@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <!-- Required by Plugin.Firebase initialization (slide 6.1 §21).
+         We don't use Crashlytics, so the mapping_file_id is "none". -->
+    <string name="com.google.firebase.crashlytics.mapping_file_id">none</string>
+</resources>

@@ -11,6 +11,8 @@
         <ToolbarItem Text="°C/°F" Clicked="OnToggleTemperatureUnit" />
         <ToolbarItem Text="{x:Static res:AppResources.ThemeTitle}" Clicked="OnThemeClicked" />
         <ToolbarItem Text="{x:Static res:AppResources.ChangeLanguage}" Clicked="OnChangeLanguageClicked" />
+        <!-- Temporary: show FCM token for testing — will be removed once backend is wired up -->
+        <ToolbarItem Text="🔔" Clicked="OnShowFcmTokenClicked" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Resources>

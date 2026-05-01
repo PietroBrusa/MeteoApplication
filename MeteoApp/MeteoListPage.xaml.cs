@@ -57,6 +57,41 @@ public partial class MeteoListPage : ContentPage
                 }
             }
         }
+
+        // Request notification permission and fetch FCM token.
+        // Must run on the main thread: Permissions.RequestAsync needs UI context.
+        var notificationService = IPlatformApplication.Current?.Services.GetService<NotificationService>();
+        if (notificationService != null)
+        {
+            try
+            {
+                await notificationService.GetDeviceTokenAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[FCM] OnAppearing token error: {ex.Message}");
+            }
+        }
+    }
+
+    // Temporary debug helper: shows the FCM token so it can be copied for backend testing
+    private async void OnShowFcmTokenClicked(object sender, EventArgs e)
+    {
+        var notificationService = IPlatformApplication.Current?.Services.GetService<NotificationService>();
+        if (notificationService == null) return;
+
+        var token = notificationService.GetCachedToken() ?? await notificationService.GetDeviceTokenAsync();
+        if (string.IsNullOrEmpty(token))
+        {
+            var details = notificationService.LastError ?? "no details";
+            await DisplayAlert("FCM token unavailable",
+                $"Permission: {notificationService.LastPermissionStatus}\nReason: {details}",
+                AppResources.OkButton);
+            return;
+        }
+
+        bool copy = await DisplayAlert("FCM token", token, "Copy", AppResources.CloseButton);
+        if (copy) await Clipboard.SetTextAsync(token);
     }
 
     // Shows an ActionSheet to let the user pick Light / Dark / System theme

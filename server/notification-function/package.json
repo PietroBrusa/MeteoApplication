@@ -1,0 +1,14 @@
+{
+  "name": "meteo-notification-function",
+  "version": "1.0.0",
+  "description": "Appwrite Function: periodic temperature check + FCM push notifications",
+  "type": "module",
+  "main": "src/main.js",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0",
+    "node-appwrite": "^14.0.0"
+  }
+}

@@ -401,3 +401,15 @@ FodyWeavers.xsd
 
 #API openweather
 Secret.cs
+
+#Firebase
+**/google-services.json
+**/GoogleService-Info.plist
+**/*firebase-adminsdk*.json
+**/serviceAccountKey.json
+
+#Appwrite Function (Node.js)
+**/function.zip
+**/function.tar.gz
+**/.env
+**/.env.local

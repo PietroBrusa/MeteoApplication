@@ -7,6 +7,12 @@
              x:Class="MeteoApp.MeteoItemPage"
              Title="{x:Static res:AppResources.WeatherDetailsTitle}">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="⚙"
+                     Clicked="OnSettingsClicked"
+                     IsEnabled="{Binding MeteoLocation.IsDeletable}"/>
+    </ContentPage.ToolbarItems>
+
     <ScrollView>
         <StackLayout x:Name="MainLayout" Spacing="20" Padding="20">
 

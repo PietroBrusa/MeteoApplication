@@ -176,5 +176,37 @@ namespace MeteoApp.Resources.Strings {
         public static string CurrentLocation {
             get { return ResourceManager.GetString("CurrentLocation", resourceCulture); }
         }
+
+        public static string NotificationsTitle {
+            get { return ResourceManager.GetString("NotificationsTitle", resourceCulture); }
+        }
+
+        public static string NotificationsEnabledLabel {
+            get { return ResourceManager.GetString("NotificationsEnabledLabel", resourceCulture); }
+        }
+
+        public static string TempThresholdMinLabel {
+            get { return ResourceManager.GetString("TempThresholdMinLabel", resourceCulture); }
+        }
+
+        public static string TempThresholdMaxLabel {
+            get { return ResourceManager.GetString("TempThresholdMaxLabel", resourceCulture); }
+        }
+
+        public static string SaveButton {
+            get { return ResourceManager.GetString("SaveButton", resourceCulture); }
+        }
+
+        public static string SettingsSavedMessage {
+            get { return ResourceManager.GetString("SettingsSavedMessage", resourceCulture); }
+        }
+
+        public static string BelowThresholdNotification {
+            get { return ResourceManager.GetString("BelowThresholdNotification", resourceCulture); }
+        }
+
+        public static string AboveThresholdNotification {
+            get { return ResourceManager.GetString("AboveThresholdNotification", resourceCulture); }
+        }
     }
 }

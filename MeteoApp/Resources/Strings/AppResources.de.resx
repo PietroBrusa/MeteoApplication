@@ -183,4 +183,28 @@
   <data name="CurrentLocation" xml:space="preserve">
     <value>Aktueller Standort ({0})</value>
   </data>
+  <data name="NotificationsTitle" xml:space="preserve">
+    <value>Benachrichtigungen</value>
+  </data>
+  <data name="NotificationsEnabledLabel" xml:space="preserve">
+    <value>Benachrichtigungen aktivieren</value>
+  </data>
+  <data name="TempThresholdMinLabel" xml:space="preserve">
+    <value>Benachrichtigen wenn unter</value>
+  </data>
+  <data name="TempThresholdMaxLabel" xml:space="preserve">
+    <value>Benachrichtigen wenn über</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="SettingsSavedMessage" xml:space="preserve">
+    <value>Einstellungen gespeichert</value>
+  </data>
+  <data name="BelowThresholdNotification" xml:space="preserve">
+    <value>Unter Schwellenwert von {0}</value>
+  </data>
+  <data name="AboveThresholdNotification" xml:space="preserve">
+    <value>Über Schwellenwert von {0}</value>
+  </data>
 </root>
