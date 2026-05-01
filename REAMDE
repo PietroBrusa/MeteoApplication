@@ -1,0 +1,30 @@
+# MeteoApp 🌦️
+
+**Sviluppo di Applicazioni Mobile - SUPSI**
+*Autore:* Pietro Brusadelli, Ruben Barros
+
+---
+
+## 1. Introduzione e Obiettivi del Progetto
+MeteoApp è un'applicazione mobile cross-platform (sviluppata per Android) che permette agli utenti di monitorare le condizioni meteorologiche delle proprie città preferite. L'obiettivo principale del progetto è fornire un sistema ibrido affidabile che garantisca la visualizzazione dei dati meteo in tempo reale e, soprattutto, avvisi l'utente tramite Notifiche Push quando la temperatura di una località supera o scende sotto le soglie impostate.
+
+L'applicazione segue un pattern architetturale di tipo **List-Detail**, combinando tecnologie native e ibride (Blazor) in un'unica soluzione integrata.
+
+## 2. Tecnologie e Metodologie Utilizzate
+*   **Frontend Mobile:** .NET MAUI (C#, XAML) con pattern MVVM.
+*   **Dettaglio UI:** Blazor WebView (Componenti Razor) integrato nell'app MAUI.
+*   **Database Locale:** SQLite per la persistenza offline (Single Source of Truth).
+*   **Backend Cloud:** Appwrite (Database e Serverless Functions) per la sincronizzazione dei dati.
+*   **Notifiche Push:** Firebase Cloud Messaging (FCM) combinato con l'SDK Firebase Admin lato server.
+*   **Integrazioni Esterne:** OpenWeatherMap API per i dati meteorologici, MAUI Maps per la selezione delle città.
+*   **Testing:** xUnit per i test unitari separati dalla logica UI.
+
+## 3. Implementazione e Architettura
+L'applicazione è strutturata in diverse aree chiave:
+*   **Gestione Location & GPS:** All'avvio, l'app richiede i permessi di localizzazione e, se concessi, utilizza il GPS del dispositivo (tramite geocoding inverso) per mostrare sempre la posizione attuale in cima alla lista. Le nuove località possono essere cercate testualmente o selezionate tramite una mappa interattiva.
+*   **Persistenza Ibrida:** Ogni volta che l'utente aggiunge una località o ne modifica le soglie di notifica, i dati vengono salvati localmente su SQLite per garantire il funzionamento offline, e inviati in parallelo asincrono ad Appwrite Cloud.
+*   **Monitoraggio Backend (Node.js):** Per evitare un consumo eccessivo di batteria sul client, il monitoraggio delle temperature è stato spostato interamente lato server. Una Function schedulata su Appwrite esegue uno scan periodico del database in cloud, interroga OpenWeatherMap e, se le soglie vengono superate, invia una notifica push tramite Firebase.
+*   **Localizzazione & Temi:** L'app supporta la gestione dinamica del tema (Light/Dark mode) e la traduzione in più lingue (Inglese, Italiano, Tedesco) tramite file `.resx`.
+
+---
+*Progetto accademico per il corso di Sviluppo di Applicazioni Mobile presso la SUPSI.*
