@@ -33,7 +33,7 @@ public partial class MeteoListPage : ContentPage
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", ex.Message, AppResources.OkButton);
+                await DisplayAlertAsync("Error", ex.Message, AppResources.OkButton);
             }
         }
     }
@@ -84,20 +84,18 @@ public partial class MeteoListPage : ContentPage
         if (string.IsNullOrEmpty(token))
         {
             var details = notificationService.LastError ?? "no details";
-            await DisplayAlert("FCM token unavailable",
-                $"Permission: {notificationService.LastPermissionStatus}\nReason: {details}",
-                AppResources.OkButton);
+            await DisplayAlertAsync("FCM token unavailable", $"Permission: {notificationService.LastPermissionStatus}\nReason: {details}", AppResources.OkButton);
             return;
         }
 
-        bool copy = await DisplayAlert("FCM token", token, "Copy", AppResources.CloseButton);
+        bool copy = await DisplayAlertAsync("FCM token", token, "Copy", AppResources.CloseButton);
         if (copy) await Clipboard.SetTextAsync(token);
     }
 
-    // Shows an ActionSheet to let the user pick Light / Dark / System theme
+
     private async void OnThemeClicked(object sender, EventArgs e)
     {
-        string action = await DisplayActionSheet(
+        string action = await DisplayActionSheetAsync(
             AppResources.ThemeTitle,
             AppResources.CloseButton,
             null,
@@ -109,9 +107,9 @@ public partial class MeteoListPage : ContentPage
 
         string themeKey = action switch
         {
-            var s when s == AppResources.ThemeLight  => "Light",
-            var s when s == AppResources.ThemeDark   => "Dark",
-            _                                        => "System"
+            var s when s == AppResources.ThemeLight => "Light",
+            var s when s == AppResources.ThemeDark => "Dark",
+            _ => "System"
         };
 
         new SettingsService().SaveTheme(themeKey);
