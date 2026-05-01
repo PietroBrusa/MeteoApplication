@@ -26,7 +26,6 @@ public partial class MeteoListPage : ContentPage
 
         if (entryToDelete != null && BindingContext is MeteoListViewModel viewModel)
         {
-            // try/catch required in async void event handlers
             try
             {
                 await viewModel.RemoveCityAsync(entryToDelete.Id);
@@ -44,7 +43,6 @@ public partial class MeteoListPage : ContentPage
 
         if (BindingContext is MeteoListViewModel viewModel)
         {
-            // Load data only on first appearance to avoid redundant API calls
             if (viewModel.Entries.Count == 0)
             {
                 try
@@ -58,8 +56,6 @@ public partial class MeteoListPage : ContentPage
             }
         }
 
-        // Request notification permission and fetch FCM token.
-        // Must run on the main thread: Permissions.RequestAsync needs UI context.
         var notificationService = IPlatformApplication.Current?.Services.GetService<NotificationService>();
         if (notificationService != null)
         {
@@ -74,7 +70,6 @@ public partial class MeteoListPage : ContentPage
         }
     }
 
-    // Temporary debug helper: shows the FCM token so it can be copied for backend testing
     private async void OnShowFcmTokenClicked(object sender, EventArgs e)
     {
         var notificationService = IPlatformApplication.Current?.Services.GetService<NotificationService>();
@@ -116,7 +111,6 @@ public partial class MeteoListPage : ContentPage
         SettingsService.ApplyTheme(themeKey);
     }
 
-    // Toggles °C / °F and refreshes the list
     private async void OnToggleTemperatureUnit(object sender, EventArgs e)
     {
         if (BindingContext is MeteoListViewModel viewModel)
@@ -125,7 +119,6 @@ public partial class MeteoListPage : ContentPage
         }
     }
 
-    // Cycles through en → it → de and rebuilds the UI in the new language
     private void OnChangeLanguageClicked(object sender, EventArgs e)
     {
         var current = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
@@ -150,7 +143,6 @@ public partial class MeteoListPage : ContentPage
             });
         }
 
-        // Clear selection so the same item can be tapped again
         if (sender is CollectionView cv)
         {
             cv.SelectedItem = null;

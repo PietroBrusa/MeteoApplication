@@ -1,10 +1,10 @@
+using MeteoApp;
 using Newtonsoft.Json;
 
 namespace MeteoApp.Tests
 {
     public class WeatherParsingTests
     {
-        // Test sincrono: verifica il parsing JSON (AS2 - unit test isolato)
         [Fact]
         public void WeatherResponse_Deserializes_Correctly()
         {
@@ -30,7 +30,7 @@ namespace MeteoApp.Tests
             var result = JsonConvert.DeserializeObject<WeatherResponse>(mockJson);
 
             Assert.NotNull(result);
-            Assert.Equal("London", result.name);
+            Assert.Equal("London", result!.name);
             Assert.Equal(17.36, result.main.temp);
             Assert.Equal(15.0, result.main.temp_min);
             Assert.Equal(20.0, result.main.temp_max);
@@ -53,44 +53,33 @@ namespace MeteoApp.Tests
             var result = JsonConvert.DeserializeObject<WeatherResponse>(mockJson);
 
             Assert.NotNull(result);
-            Assert.Empty(result.weather);
+            Assert.Empty(result!.weather);
         }
 
-        // Test del SettingsService: verifica la formattazione delle temperature (AS2 + AS7)
         [Fact]
         public void FormatTemperature_Celsius_ReturnsCorrectFormat()
         {
-            // Arrange: forza l'unità a Celsius
-            // (SettingsService.CurrentUnit è "C" di default)
-
-            // Act
-            string result = SettingsService.FormatTemperature(17.36);
-
-            // Assert
+            string result = TemperatureFormatter.Format(17.36, "C");
             Assert.Equal("17.4°C", result);
         }
 
         [Fact]
         public void FormatTemperature_Fahrenheit_ConvertsCorrectly()
         {
-            // Arrange: imposta l'unità a Fahrenheit tramite SaveTemperatureUnit
-            new SettingsService().SaveTemperatureUnit("F");
-
-            // Act
-            string result = SettingsService.FormatTemperature(0.0); // 0°C = 32°F
-
-            // Assert
+            string result = TemperatureFormatter.Format(0.0, "F");
             Assert.Equal("32.0°F", result);
-
-            // Cleanup: ripristina Celsius
-            new SettingsService().SaveTemperatureUnit("C");
         }
 
-        // Test asincrono: verifica che il parsing di una lista di città funzioni (AS2 - async test)
+        [Fact]
+        public void FormatTemperature_UnknownUnit_FallsBackToCelsius()
+        {
+            string result = TemperatureFormatter.Format(20.0, "X");
+            Assert.Equal("20.0°C", result);
+        }
+
         [Fact]
         public async Task WeatherFindResponse_Deserializes_ListCorrectly()
         {
-            // Arrange
             string mockJson = @"{
                 ""list"": [
                     {
@@ -110,13 +99,11 @@ namespace MeteoApp.Tests
                 ]
             }";
 
-            // Act: simuliamo un'operazione asincrona come in AS2
             var result = await Task.Run(() =>
                 JsonConvert.DeserializeObject<WeatherFindResponse>(mockJson));
 
-            // Assert
             Assert.NotNull(result);
-            Assert.Equal(2, result.list.Count);
+            Assert.Equal(2, result!.list.Count);
             Assert.Equal("London", result.list[0].name);
             Assert.Equal("Londonderry", result.list[1].name);
         }

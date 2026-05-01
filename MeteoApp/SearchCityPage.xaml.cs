@@ -15,7 +15,6 @@ public partial class SearchCityPage : ContentPage
         InitializeComponent();
         _viewModel = viewModel;
 
-        // Default map view centered on Switzerland
         var defaultLocation = new Location(46.8, 8.2);
         SelectionMap.MoveToRegion(MapSpan.FromCenterAndRadius(defaultLocation, Distance.FromKilometers(400)));
     }
@@ -57,14 +56,12 @@ public partial class SearchCityPage : ContentPage
             await Navigation.PopModalAsync();
         }
 
-        // Clear selection so the same item can be tapped again
         if (sender is CollectionView cv)
         {
             cv.SelectedItem = null;
         }
     }
 
-    // Handles a tap on the map: reverse geocodes the coordinates to a city name
     private async void OnMapClicked(object sender, MapClickedEventArgs e)
     {
         try
@@ -75,7 +72,6 @@ public partial class SearchCityPage : ContentPage
             var placemark = placemarks?.FirstOrDefault();
             if (placemark == null) return;
 
-            // Use the most specific available place name
             string cityName = placemark.Locality
                 ?? placemark.SubAdminArea
                 ?? placemark.AdminArea
@@ -86,7 +82,6 @@ public partial class SearchCityPage : ContentPage
             _selectedMapLocation = await _viewModel.FetchWeatherForCityAsync(cityName, 0);
             if (_selectedMapLocation.WeatherDescription == "Error loading data") return;
 
-            // Drop a pin and show the confirm bar
             SelectionMap.Pins.Clear();
             SelectionMap.Pins.Add(new Pin
             {
@@ -103,12 +98,10 @@ public partial class SearchCityPage : ContentPage
         }
     }
 
-    // Saves the map-selected city and dismisses the page
     private async void OnAddFromMapClicked(object sender, EventArgs e)
     {
         if (_selectedMapLocation != null)
         {
-            // try/catch required in async void event handlers
             try
             {
                 await _viewModel.AddCityAsync(_selectedMapLocation.Name);

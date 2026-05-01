@@ -23,13 +23,11 @@ public class MainActivity : MauiAppCompatActivity
         HandleIntent(intent);
     }
 
-    // Forwards FCM tap intents to the plugin so notification taps wake the app correctly
     private void HandleIntent(Intent? intent)
     {
         FirebaseCloudMessagingImplementation.OnNewIntent(intent);
     }
 
-    // Required on Android 8+ (API 26): notifications must be posted to a registered channel
     private void CreateNotificationChannel()
     {
         if (Build.VERSION.SdkInt < BuildVersionCodes.O) return;
@@ -39,7 +37,6 @@ public class MainActivity : MauiAppCompatActivity
         var channel = new NotificationChannel(channelId, "General", NotificationImportance.Default);
         notificationManager?.CreateNotificationChannel(channel);
 
-        // Tells the plugin which channel to use when posting incoming push notifications
         FirebaseCloudMessagingImplementation.ChannelId = channelId;
     }
 }

@@ -18,7 +18,6 @@ namespace MeteoApp
             set { _entries = value; OnPropertyChanged(); }
         }
 
-        // Controls ActivityIndicator visibility during async operations
         private bool _isLoading;
         public bool IsLoading
         {
@@ -28,14 +27,12 @@ namespace MeteoApp
 
         public MeteoListViewModel()
         {
-            // Resolve singletons registered in MauiProgram (slide 5.2 §11)
             _weatherApi = IPlatformApplication.Current!.Services.GetRequiredService<WeatherApiService>();
             _notificationService = IPlatformApplication.Current!.Services.GetRequiredService<NotificationService>();
             _appwriteSync = IPlatformApplication.Current!.Services.GetRequiredService<AppwriteSyncService>();
             Entries = new ObservableCollection<MeteoLocation>();
         }
 
-        // Loads saved cities from DB, refreshes their weather, then prepends the GPS location
         public async Task LoadLocationsFromDatabaseAsync()
         {
             IsLoading = true;
@@ -48,10 +45,8 @@ namespace MeteoApp
                 foreach (var loc in savedLocations)
                 {
                     var updatedLoc = await FetchWeatherForCityAsync(loc.Name, loc.Id);
-                    // Fall back to cached data if the API call fails
                     if (updatedLoc.WeatherDescription != "Error loading data")
                     {
-                        // Preserve user-configured per-location settings (the API doesn't return them)
                         updatedLoc.NotificationsEnabled = loc.NotificationsEnabled;
                         updatedLoc.TempThresholdMin = loc.TempThresholdMin;
                         updatedLoc.TempThresholdMax = loc.TempThresholdMax;
@@ -65,7 +60,6 @@ namespace MeteoApp
 
                 string currentCityName = await GetGPSCityNameAsync();
 
-                // Only insert GPS entry when permission and location are available
                 if (!currentCityName.Contains("denied") && !currentCityName.Contains("error") && !currentCityName.Contains("disabled"))
                 {
                     var currentLocationWeather = await FetchWeatherForCityAsync(currentCityName, 0);
@@ -81,7 +75,6 @@ namespace MeteoApp
             }
         }
 
-        // Toggles °C / °F and reloads the list with the new unit
         public async Task ToggleTemperatureUnitAsync()
         {
             string newUnit = SettingsService.CurrentUnit == "C" ? "F" : "C";
@@ -98,7 +91,6 @@ namespace MeteoApp
                 await App.Database.SaveLocationAsync(newLocation);
                 Entries.Add(newLocation);
 
-                // Push to cloud — best-effort, never blocks the user
                 var token = _notificationService.GetCachedToken();
                 var docId = await _appwriteSync.SyncLocationAsync(newLocation, token);
                 if (!string.IsNullOrEmpty(docId) && docId != newLocation.AppwriteDocumentId)
@@ -111,7 +103,6 @@ namespace MeteoApp
 
         public async Task RemoveCityAsync(int id)
         {
-            // Delete cloud copy first (still works if it fails)
             var locationToRemove = Entries.FirstOrDefault(l => l.Id == id);
             if (locationToRemove != null && !string.IsNullOrEmpty(locationToRemove.AppwriteDocumentId))
                 await _appwriteSync.DeleteLocationAsync(locationToRemove.AppwriteDocumentId);
@@ -127,7 +118,6 @@ namespace MeteoApp
         public Task<List<MeteoLocation>> SearchCitiesAsync(string query)
             => _weatherApi.SearchCitiesAsync(query);
 
-        // Requests location permission and resolves GPS coordinates to a city name
         public async Task<string> GetGPSCityNameAsync()
         {
             try
@@ -145,7 +135,6 @@ namespace MeteoApp
 
                 if (location != null)
                 {
-                    // Reverse geocoding: coordinates → placemark
                     var placemarks = await Geocoding.Default.GetPlacemarksAsync(location.Latitude, location.Longitude);
                     var placemark = placemarks?.FirstOrDefault();
                     if (placemark != null) return $"{placemark.Locality}";

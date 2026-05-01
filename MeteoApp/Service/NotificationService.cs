@@ -7,25 +7,27 @@ using AndroidX.Core.App;
 
 namespace MeteoApp;
 
-// Handles runtime notification permission and exposes the FCM device token (slide 6.1 §24).
-// Token is later sent to our backend so the server can target this device with push notifications.
+/// <summary>
+/// Handles runtime notification permission and exposes the FCM device token.
+/// The token is forwarded to the backend so the server can target this device.
+/// </summary>
 public class NotificationService
 {
     const string TokenKey = "fcm_device_token";
 
-    // Surface the latest failure reason so the UI can display a precise diagnostic
     public string? LastError { get; private set; }
     public PermissionStatus LastPermissionStatus { get; private set; } = PermissionStatus.Unknown;
 
-    // Returns the FCM registration token, or null if the user denied permission or registration failed.
-    // Caches the token in Preferences so subsequent calls don't always hit the FCM service.
+    /// <summary>
+    /// Returns the FCM registration token, or null if the user denied permission or registration failed.
+    /// Caches the token in <see cref="Preferences"/> so subsequent calls don't always hit the FCM service.
+    /// </summary>
     public async Task<string?> GetDeviceTokenAsync()
     {
         LastError = null;
 #if ANDROID
         try
         {
-            // POST_NOTIFICATIONS is a runtime permission on Android 13+ (API 33)
             LastPermissionStatus = await Permissions.RequestAsync<PostNotificationsPermission>();
             if (LastPermissionStatus != PermissionStatus.Granted)
             {
@@ -61,15 +63,15 @@ public class NotificationService
 #endif
     }
 
-    // Returns the last token cached in Preferences (no network call), or null if never fetched.
     public string? GetCachedToken()
     {
         var cached = Preferences.Get(TokenKey, string.Empty);
         return string.IsNullOrEmpty(cached) ? null : cached;
     }
 
-    // Posts a local notification on the same channel registered by MainActivity.
-    // Used by the temperature-threshold check (slide 6.1 §15).
+    /// <summary>
+    /// Posts a local notification on the channel registered by <see cref="MainActivity"/>.
+    /// </summary>
     public void ShowLocalNotification(string title, string body)
     {
 #if ANDROID
@@ -86,7 +88,6 @@ public class NotificationService
                 .SetAutoCancel(true);
 
             var manager = NotificationManagerCompat.From(context);
-            // Unique id per call so notifications stack instead of replacing each other
             var notificationId = (int)(DateTime.Now.Ticks % int.MaxValue);
             manager.Notify(notificationId, builder.Build());
         }
@@ -99,7 +100,6 @@ public class NotificationService
 }
 
 #if ANDROID
-// Custom MAUI permission wrapper for POST_NOTIFICATIONS (no built-in equivalent)
 public class PostNotificationsPermission : Permissions.BasePlatformPermission
 {
     public override (string androidPermission, bool isRuntime)[] RequiredPermissions =>

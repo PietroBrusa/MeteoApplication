@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace MeteoApp.Models
 {
-    // Normalized weather states derived from OpenWeatherMap condition codes
     public enum WeatherCondition
     {
         Thunderstorm,
@@ -20,7 +15,9 @@ namespace MeteoApp.Models
 
     public static class WeatherCodeMapper
     {
-        // Maps an OWM numeric code to a WeatherCondition enum value
+        /// <summary>
+        /// Maps an OpenWeatherMap numeric condition code to a normalized <see cref="WeatherCondition"/>.
+        /// </summary>
         public static WeatherCondition GetConditionFromCode(int code)
         {
             return code switch
@@ -29,18 +26,20 @@ namespace MeteoApp.Models
                 >= 300 and <= 399 => WeatherCondition.Drizzle,
                 >= 500 and <= 599 => WeatherCondition.Rain,
                 >= 600 and <= 699 => WeatherCondition.Snow,
-                >= 700 and <= 799 => WeatherCondition.Fog,  // Mist, smoke, haze, etc.
+                >= 700 and <= 799 => WeatherCondition.Fog,
                 800               => WeatherCondition.Clear,
                 >= 801 and <= 899 => code switch
                 {
-                    804 => WeatherCondition.Overcast,        // 100% cloud cover
+                    804 => WeatherCondition.Overcast,
                     _   => WeatherCondition.Clouds
                 },
                 _ => WeatherCondition.Unknown
             };
         }
 
-        // Returns the asset path for a given condition code
+        /// <summary>
+        /// Returns the asset path (relative to <c>Resources/Images</c>) for a given OWM condition code.
+        /// </summary>
         public static string GetImageName(int code)
         {
             var condition = GetConditionFromCode(code);
@@ -58,11 +57,6 @@ namespace MeteoApp.Models
             };
 
             return $"Weather/{filename}";
-        }
-
-        public static ImageSource GetImageSource(int code)
-        {
-            return ImageSource.FromFile(GetImageName(code));
         }
     }
 }

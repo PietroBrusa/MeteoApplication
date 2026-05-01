@@ -87,4 +87,8 @@
     <ItemGroup>
       <PackageReference Update="Microsoft.Maui.Controls" Version="10.0.51" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MeteoApp.Core\MeteoApp.Core.csproj" />
+    </ItemGroup>
 </Project>

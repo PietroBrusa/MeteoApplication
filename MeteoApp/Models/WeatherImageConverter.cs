@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace MeteoApp.Models
 {
-    // IValueConverter that turns a WeatherCode (int) into an ImageSource for XAML bindings
+    /// <summary>
+    /// XAML <see cref="IValueConverter"/> that turns an OWM weather code (int) into an
+    /// <see cref="ImageSource"/>. Caches results per <see cref="WeatherCondition"/> to
+    /// avoid recreating image sources on every cell render.
+    /// </summary>
     public class WeatherImageConverter : IValueConverter
     {
-        // Cache ImageSource objects per condition to avoid recreating them on every cell render
         private static readonly ConcurrentDictionary<WeatherCondition, ImageSource> _imageCache = new();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -26,7 +27,6 @@ namespace MeteoApp.Models
             return null;
         }
 
-        // One-way binding only — back-conversion is not needed
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

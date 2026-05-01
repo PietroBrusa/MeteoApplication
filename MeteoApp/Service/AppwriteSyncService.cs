@@ -4,11 +4,11 @@ using Appwrite.Services;
 
 namespace MeteoApp;
 
-// Mirrors locations + thresholds + the FCM device token to Appwrite (slide 8.1).
-// The backend (next phase) reads this collection to decide who to push.
-//
-// Sync is best-effort: any network/Appwrite failure is logged and swallowed so
-// that local-only flows (DB save, list update) continue to work offline.
+/// <summary>
+/// Mirrors locations + thresholds + the FCM device token to Appwrite.
+/// All operations are best-effort: failures are logged and swallowed so local-only
+/// flows keep working offline.
+/// </summary>
 public class AppwriteSyncService
 {
     private readonly Client _client;
@@ -24,8 +24,10 @@ public class AppwriteSyncService
         _databases = new Databases(_client);
     }
 
-    // Creates or updates the cloud document for a location.
-    // Returns the Appwrite document id (existing one or newly generated).
+    /// <summary>
+    /// Creates or updates the cloud document for a location.
+    /// </summary>
+    /// <returns>The Appwrite document id (existing or newly generated), or the input id on failure.</returns>
     public async Task<string?> SyncLocationAsync(MeteoLocation location, string? deviceToken)
     {
         if (string.IsNullOrEmpty(deviceToken))
@@ -50,7 +52,6 @@ public class AppwriteSyncService
         {
             if (string.IsNullOrEmpty(location.AppwriteDocumentId))
             {
-                // First sync — create a new document, server assigns the id
                 var doc = await _databases.CreateDocument(
                     databaseId: Secret.AppwriteDatabaseId,
                     collectionId: Secret.AppwriteCollectionId,
@@ -62,7 +63,6 @@ public class AppwriteSyncService
             }
             else
             {
-                // Subsequent sync — update existing document in place
                 var doc = await _databases.UpdateDocument(
                     databaseId: Secret.AppwriteDatabaseId,
                     collectionId: Secret.AppwriteCollectionId,
@@ -76,11 +76,10 @@ public class AppwriteSyncService
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[Appwrite] Sync error for {location.Name}: {ex.Message}");
-            return location.AppwriteDocumentId;  // unchanged on failure
+            return location.AppwriteDocumentId;
         }
     }
 
-    // Removes the cloud document. Safe to call with empty id (no-op).
     public async Task DeleteLocationAsync(string appwriteDocumentId)
     {
         if (string.IsNullOrEmpty(appwriteDocumentId)) return;

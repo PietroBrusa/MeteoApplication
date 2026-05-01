@@ -10,7 +10,6 @@ namespace MeteoApp
     {
         public const string DatabaseFilename = "meteo_locations.db3";
 
-        // SharedCache allows multiple connections to read the same DB file
         public const SQLite.SQLiteOpenFlags Flags =
             SQLite.SQLiteOpenFlags.ReadWrite |
             SQLite.SQLiteOpenFlags.Create |
@@ -29,7 +28,6 @@ namespace MeteoApp
             _database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
         }
 
-        // Lazy initializer — creates the table only on first use
         private async Task Init()
         {
             if (!_initialized)

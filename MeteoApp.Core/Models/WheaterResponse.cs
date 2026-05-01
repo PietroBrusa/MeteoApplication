@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-
-// Data models that map directly to the OpenWeatherMap JSON API response
-
 public class Coord
 {
     public double lon { get; set; }
@@ -10,7 +6,7 @@ public class Coord
 
 public class Weather
 {
-    public int id { get; set; }      // Condition code used for icon/image mapping
+    public int id { get; set; }
     public string main { get; set; }
     public string description { get; set; }
     public string icon { get; set; }
@@ -41,12 +37,12 @@ public class Sys
     public int type { get; set; }
     public int id { get; set; }
     public double message { get; set; }
-    public string country { get; set; }  // ISO 3166-1 alpha-2 country code
+    public string country { get; set; }
     public int sunrise { get; set; }
     public int sunset { get; set; }
 }
 
-// Root object returned by /weather endpoint
+/// <summary>Root object returned by OpenWeatherMap <c>/weather</c>.</summary>
 public class WeatherResponse
 {
     public Coord coord { get; set; }
@@ -63,7 +59,7 @@ public class WeatherResponse
     public int cod { get; set; }
 }
 
-// Root object returned by /find endpoint (multiple city results)
+/// <summary>Root object returned by OpenWeatherMap <c>/find</c> (multi-city search).</summary>
 public class WeatherFindResponse
 {
     public List<WeatherResponse> list { get; set; }

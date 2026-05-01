@@ -4,7 +4,6 @@ namespace MeteoApp;
 
 public partial class App : Application
 {
-    // Singleton database instance shared across the app
     private static MeteoDatabase database;
 
     public static MeteoDatabase Database
@@ -23,12 +22,10 @@ public partial class App : Application
 
     public App(IServiceProvider provider)
     {
-        // Load persisted settings before building the UI
         var settingsService = new SettingsService();
         settingsService.LoadTemperatureUnit();
         SettingsService.ApplyTheme(settingsService.LoadTheme());
 
-        // Restore the saved language, or keep the system default
         var savedLanguage = settingsService.LoadLanguage();
         if (!string.IsNullOrEmpty(savedLanguage))
         {
@@ -51,7 +48,6 @@ public partial class App : Application
     {
         var window = new Window(new NavigationPage(new MeteoListPage()));
 
-        // Rebuild the page tree when the language changes so resource strings refresh
         LanguageService.LanguageChanged += () =>
         {
             window.Page = new NavigationPage(new MeteoListPage());

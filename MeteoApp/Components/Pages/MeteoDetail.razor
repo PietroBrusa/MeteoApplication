@@ -1,4 +1,4 @@
-﻿@inject MeteoLocationService LocationService
+@inject MeteoLocationService LocationService
 
 @if (location is null)
 {
@@ -25,7 +25,6 @@ else
             </div>
         </div>
 
-        <!-- Extended detail sections -->
         <div class="detail-card">
             <h3>💧 Humidity</h3>
             <p>@location.HumidityDisplay</p>

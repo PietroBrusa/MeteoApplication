@@ -13,7 +13,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.UseMauiMaps()   // Required for the Map control used in SearchCityPage and MeteoItemPage
+			.UseMauiMaps()
 			.RegisterFirebaseServices()
 			.ConfigureFonts(fonts =>
 			{
@@ -34,8 +34,6 @@ public static class MauiProgram
 		return builder.Build();
 	}
 
-	// Initializes Plugin.Firebase via the MAUI lifecycle (slide 6.1 + plugin v4 README).
-	// FirebaseOptions/name are omitted: the plugin reads them from google-services.json (Platforms/Android).
 	private static MauiAppBuilder RegisterFirebaseServices(this MauiAppBuilder builder)
 	{
 		builder.ConfigureLifecycleEvents(events =>

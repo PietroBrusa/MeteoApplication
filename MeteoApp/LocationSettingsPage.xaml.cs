@@ -4,8 +4,6 @@ using MeteoApp.Resources.Strings;
 
 namespace MeteoApp;
 
-// Local view-model wraps a MeteoLocation so Slider value changes trigger
-// a Display property refresh (TwoWay binding on the underlying double).
 public partial class LocationSettingsPage : ContentPage, INotifyPropertyChanged
 {
     public MeteoLocation MeteoLocation { get; }
@@ -61,7 +59,6 @@ public partial class LocationSettingsPage : ContentPage, INotifyPropertyChanged
         {
             await App.Database.UpdateLocationAsync(MeteoLocation);
 
-            // Push the updated thresholds + flag to cloud (best-effort)
             var services = IPlatformApplication.Current?.Services;
             var sync = services?.GetService<AppwriteSyncService>();
             var notify = services?.GetService<NotificationService>();
