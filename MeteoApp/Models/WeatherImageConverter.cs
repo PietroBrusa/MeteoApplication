@@ -4,11 +4,6 @@ using System.Globalization;
 
 namespace MeteoApp.Models
 {
-    /// <summary>
-    /// XAML <see cref="IValueConverter"/> that turns an OWM weather code (int) into an
-    /// <see cref="ImageSource"/>. Caches results per <see cref="WeatherCondition"/> to
-    /// avoid recreating image sources on every cell render.
-    /// </summary>
     public class WeatherImageConverter : IValueConverter
     {
         private static readonly ConcurrentDictionary<WeatherCondition, ImageSource> _imageCache = new();

@@ -63,10 +63,7 @@ public partial class MeteoListPage : ContentPage
             {
                 await notificationService.GetDeviceTokenAsync();
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[FCM] OnAppearing token error: {ex.Message}");
-            }
+            catch (Exception) { }
         }
     }
 
@@ -128,7 +125,6 @@ public partial class MeteoListPage : ContentPage
         else if (current == "it") newCulture = "de";
         else if (current == "de") newCulture = "en";
 
-        Console.WriteLine($"Language change: {current} → {newCulture}");
         App.LanguageService.SetLanguage(newCulture);
     }
 

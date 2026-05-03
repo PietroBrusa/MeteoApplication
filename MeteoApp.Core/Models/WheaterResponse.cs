@@ -42,7 +42,6 @@ public class Sys
     public int sunset { get; set; }
 }
 
-/// <summary>Root object returned by OpenWeatherMap <c>/weather</c>.</summary>
 public class WeatherResponse
 {
     public Coord coord { get; set; }
@@ -59,7 +58,6 @@ public class WeatherResponse
     public int cod { get; set; }
 }
 
-/// <summary>Root object returned by OpenWeatherMap <c>/find</c> (multi-city search).</summary>
 public class WeatherFindResponse
 {
     public List<WeatherResponse> list { get; set; }

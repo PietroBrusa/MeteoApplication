@@ -92,10 +92,7 @@ public partial class SearchCityPage : ContentPage
             SelectedCityLabel.Text = _selectedMapLocation.Name;
             ConfirmFrame.IsVisible = true;
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Map selection error: {ex.Message}");
-        }
+        catch (Exception) { }
     }
 
     private async void OnAddFromMapClicked(object sender, EventArgs e)

@@ -3,10 +3,6 @@ using Newtonsoft.Json;
 
 namespace MeteoApp;
 
-/// <summary>
-/// Centralizes all OpenWeatherMap calls. Holds a single <see cref="HttpClient"/> instance
-/// to avoid socket exhaustion from per-call instantiation.
-/// </summary>
 public class WeatherApiService
 {
     private readonly HttpClient _client = new();
@@ -15,10 +11,6 @@ public class WeatherApiService
     private static string CurrentLang =>
         CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
-    /// <summary>
-    /// Fetches current weather for a city. On failure returns a placeholder
-    /// <see cref="MeteoLocation"/> with <c>WeatherDescription = "Error loading data"</c>.
-    /// </summary>
     public async Task<MeteoLocation> FetchWeatherForCityAsync(string cityName, int id)
     {
         string encodedCity = Uri.EscapeDataString(cityName);
@@ -52,9 +44,6 @@ public class WeatherApiService
         }
     }
 
-    /// <summary>
-    /// Calls the <c>/find</c> endpoint and returns multiple matches to disambiguate city names.
-    /// </summary>
     public async Task<List<MeteoLocation>> SearchCitiesAsync(string query)
     {
         var results = new List<MeteoLocation>();
@@ -85,10 +74,7 @@ public class WeatherApiService
                 }
             }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Search error: {ex.Message}");
-        }
+        catch (Exception) { }
 
         return results;
     }

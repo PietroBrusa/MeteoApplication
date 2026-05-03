@@ -2,10 +2,6 @@ namespace MeteoApp
 {
     public static class TemperatureFormatter
     {
-        /// <summary>
-        /// Formats a Celsius value as a display string in the requested unit.
-        /// </summary>
-        /// <param name="unit">"C" or "F". Any other value falls back to Celsius.</param>
         public static string Format(double celsius, string unit)
         {
             if (unit == "F")

@@ -15,9 +15,6 @@ namespace MeteoApp.Models
 
     public static class WeatherCodeMapper
     {
-        /// <summary>
-        /// Maps an OpenWeatherMap numeric condition code to a normalized <see cref="WeatherCondition"/>.
-        /// </summary>
         public static WeatherCondition GetConditionFromCode(int code)
         {
             return code switch
@@ -37,9 +34,6 @@ namespace MeteoApp.Models
             };
         }
 
-        /// <summary>
-        /// Returns the asset path (relative to <c>Resources/Images</c>) for a given OWM condition code.
-        /// </summary>
         public static string GetImageName(int code)
         {
             var condition = GetConditionFromCode(code);

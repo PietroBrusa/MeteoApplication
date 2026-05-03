@@ -7,10 +7,6 @@ using AndroidX.Core.App;
 
 namespace MeteoApp;
 
-/// <summary>
-/// Handles runtime notification permission and exposes the FCM device token.
-/// The token is forwarded to the backend so the server can target this device.
-/// </summary>
 public class NotificationService
 {
     const string TokenKey = "fcm_device_token";
@@ -18,10 +14,6 @@ public class NotificationService
     public string? LastError { get; private set; }
     public PermissionStatus LastPermissionStatus { get; private set; } = PermissionStatus.Unknown;
 
-    /// <summary>
-    /// Returns the FCM registration token, or null if the user denied permission or registration failed.
-    /// Caches the token in <see cref="Preferences"/> so subsequent calls don't always hit the FCM service.
-    /// </summary>
     public async Task<string?> GetDeviceTokenAsync()
     {
         LastError = null;
@@ -32,7 +24,6 @@ public class NotificationService
             if (LastPermissionStatus != PermissionStatus.Granted)
             {
                 LastError = $"POST_NOTIFICATIONS not granted (status: {LastPermissionStatus})";
-                System.Diagnostics.Debug.WriteLine($"[FCM] {LastError}");
                 return null;
             }
 
@@ -42,19 +33,16 @@ public class NotificationService
             if (!string.IsNullOrEmpty(token))
             {
                 Preferences.Set(TokenKey, token);
-                System.Diagnostics.Debug.WriteLine($"[FCM] Device token: {token}");
             }
             else
             {
                 LastError = "FCM returned empty token";
-                System.Diagnostics.Debug.WriteLine($"[FCM] {LastError}");
             }
             return token;
         }
         catch (Exception ex)
         {
             LastError = $"{ex.GetType().Name}: {ex.Message}";
-            System.Diagnostics.Debug.WriteLine($"[FCM] Token error: {LastError}");
             return null;
         }
 #else
@@ -69,9 +57,6 @@ public class NotificationService
         return string.IsNullOrEmpty(cached) ? null : cached;
     }
 
-    /// <summary>
-    /// Posts a local notification on the channel registered by <see cref="MainActivity"/>.
-    /// </summary>
     public void ShowLocalNotification(string title, string body)
     {
 #if ANDROID
@@ -91,10 +76,7 @@ public class NotificationService
             var notificationId = (int)(DateTime.Now.Ticks % int.MaxValue);
             manager.Notify(notificationId, builder.Build());
         }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[Notification] local notify error: {ex.Message}");
-        }
+        catch (Exception) { }
 #endif
     }
 }
