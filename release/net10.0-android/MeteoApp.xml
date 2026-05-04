@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MeteoApp</name>
+    </assembly>
+    <members>
+        <member name="T:MeteoApp.Resources.Strings.AppResources">
+            <summary>
+              Classe di risorse fortemente tipizzata per la ricerca di stringhe localizzate e così via.
+            </summary>
+        </member>
+        <member name="P:MeteoApp.Resources.Strings.AppResources.ResourceManager">
+            <summary>
+              Restituisce l'istanza di ResourceManager nella cache utilizzata da questa classe.
+            </summary>
+        </member>
+        <member name="P:MeteoApp.Resources.Strings.AppResources.Culture">
+            <summary>
+              Esegue l'override della proprietà CurrentUICulture del thread corrente per tutte le
+              ricerche di risorse eseguite utilizzando questa classe di risorse fortemente tipizzata.
+            </summary>
+        </member>
+        <member name="P:MeteoApp.Resources.Strings.AppResources.PageTitleLocations">
+            <summary>
+              Cerca una stringa localizzata simile a Change language.
+            </summary>
+            
+        </member>
+        <member name="P:MeteoApp.Resources.Strings.AppResources.HelloMessage">
+            <summary>
+              Cerca una stringa localizzata simile a Hello World!.
+            </summary>
+        </member>
+        <member name="T:MeteoApp.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+    </members>
+</doc>
